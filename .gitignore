@@ -1,2 +1,6 @@
 
 obj/
+
+.idea/
+
+bin/
