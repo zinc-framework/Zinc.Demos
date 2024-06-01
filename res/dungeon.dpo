@@ -1,0 +1,572 @@
+{
+    "sheets": [
+        {
+            "name": "cards",
+            "description": "description of what the sheet is",
+            "displayColumn": "id",
+            "guid": "26410e70-1719-447a-ad54-9535289342fa",
+            "columns": [
+                {
+                    "typeStr": "int",
+                    "guid": "6d038f65-3663-420b-8bb7-ded72986c18a",
+                    "description": "int field",
+                    "name": "damage",
+                    "min": -10000,
+                    "max": 100000,
+                    "defaultValue": 0,
+                    "iconName": "newInt",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "min": "int",
+                        "max": "int",
+                        "defaultValue": "int"
+                    }
+                },
+                {
+                    "typeStr": "bool",
+                    "guid": "e61094c4-b664-4901-bfae-7fb8bcc288ce",
+                    "description": "bool field",
+                    "name": "damageable",
+                    "defaultValue": true,
+                    "iconName": "newBool",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "defaultValue": "bool"
+                    }
+                },
+                {
+                    "typeStr": "int",
+                    "guid": "399cd86b-744e-4fec-a543-1101585fa7c4",
+                    "description": "int field",
+                    "name": "health",
+                    "min": -10000,
+                    "max": 100000,
+                    "defaultValue": 1,
+                    "iconName": "newInt",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "min": "int",
+                        "max": "int",
+                        "defaultValue": "int"
+                    }
+                },
+                {
+                    "typeStr": "list",
+                    "guid": "14ef2ab4-38d9-4e77-a4a9-27096de092d5",
+                    "name": "keywords",
+                    "description": "new list field",
+                    "sheet": "3a60bec9-09b5-4137-b3c2-6ddbeb507544",
+                    "defaultValue": [],
+                    "iconName": "newList",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text"
+                    }
+                },
+                {
+                    "typeStr": "list",
+                    "guid": "b596124e-9372-4488-9cfb-d26adb31aae6",
+                    "name": "dropTable",
+                    "description": "new list field",
+                    "sheet": "e03bf4e4-61b4-4a9d-b610-255f052726d5",
+                    "defaultValue": [],
+                    "iconName": "newList",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text"
+                    }
+                }
+            ],
+            "lines": [
+                {
+                    "guid": "ecc9de45-f757-459b-ade5-1380e3cc4344",
+                    "id": "floor",
+                    "damage": 0,
+                    "damageable": true,
+                    "health": 10,
+                    "keywords": [
+                        {
+                            "guid": "900640ee-79fc-41d9-981e-7d4ef8592d61",
+                            "keyword": "127b7b57-eebb-4931-9bc1-1cfb7cbda4ba",
+                            "id": "0"
+                        }
+                    ],
+                    "dropTable": []
+                },
+                {
+                    "guid": "9ddb05ba-7a13-40e2-81d2-d587c55874f4",
+                    "id": "enemy",
+                    "damage": 1,
+                    "damageable": true,
+                    "health": 2,
+                    "keywords": [
+                        {
+                            "guid": "b73ea9ff-6472-40a7-89ff-461bf41372ac",
+                            "keyword": "ee102472-7bd5-47c8-a83e-180d696c775d",
+                            "id": "0"
+                        }
+                    ],
+                    "dropTable": [
+                        {
+                            "guid": "eaf32d53-9914-46d7-8aee-5ad9243c9947",
+                            "dropOption": "",
+                            "id": "0",
+                            "weight": 80
+                        },
+                        {
+                            "guid": "75fd32ce-3e6f-47a4-b846-1b96c1f7a3a9",
+                            "dropOption": "e6eec356-9f65-4936-a3a0-b371c524fd4e",
+                            "id": "1",
+                            "weight": 20
+                        }
+                    ]
+                },
+                {
+                    "guid": "953f603d-96ae-4e1c-b85e-a7bc0fb5ce87",
+                    "id": "big enemy",
+                    "damage": 2,
+                    "damageable": true,
+                    "health": 5,
+                    "keywords": [
+                        {
+                            "guid": "6b50e8ae-97c8-4ff7-892e-10af196048a5",
+                            "keyword": "ee102472-7bd5-47c8-a83e-180d696c775d",
+                            "id": "0"
+                        }
+                    ],
+                    "dropTable": [
+                        {
+                            "guid": "fa5d959c-472f-4c42-b1cd-f95c8e1173b1",
+                            "dropOption": "e6eec356-9f65-4936-a3a0-b371c524fd4e",
+                            "weight": 100,
+                            "id": "1"
+                        }
+                    ]
+                },
+                {
+                    "guid": "ae613822-1ab2-4fa1-b9e7-0fdcd4ba70dd",
+                    "id": "rock",
+                    "damage": 0,
+                    "damageable": true,
+                    "health": 1,
+                    "keywords": [
+                        {
+                            "guid": "4cb6f05d-d72a-4efc-ae94-9c8d2531d25c",
+                            "keyword": "ee102472-7bd5-47c8-a83e-180d696c775d",
+                            "id": "0"
+                        }
+                    ],
+                    "dropTable": [
+                        {
+                            "guid": "abe6df98-9fd5-4972-9874-12b4872b1cf4",
+                            "dropOption": "e6eec356-9f65-4936-a3a0-b371c524fd4e",
+                            "weight": 90,
+                            "id": "0"
+                        },
+                        {
+                            "guid": "1579430a-eae0-4f45-8b9a-8e3fecb75e78",
+                            "dropOption": "",
+                            "weight": 5,
+                            "id": "1"
+                        }
+                    ]
+                },
+                {
+                    "guid": "a988e378-ec8b-4a00-8362-59a827cf8eab",
+                    "id": "stairs",
+                    "damage": 0,
+                    "damageable": false,
+                    "health": 0,
+                    "keywords": [
+                        {
+                            "guid": "4231588a-ec60-453f-9907-9a93a0f8e5f5",
+                            "keyword": "0b4d97d8-a7ae-453e-8842-0558ed776a95",
+                            "id": "0"
+                        }
+                    ],
+                    "dropTable": []
+                },
+                {
+                    "guid": "e6eec356-9f65-4936-a3a0-b371c524fd4e",
+                    "id": "food",
+                    "damage": 0,
+                    "damageable": true,
+                    "health": 1,
+                    "keywords": [
+                        {
+                            "guid": "fa0223fa-4ea0-4750-b9c2-6c10be2c1dcf",
+                            "keyword": "3452f997-c577-45a8-acac-9b8b676c77e5",
+                            "id": "0"
+                        },
+                        {
+                            "guid": "0f11d2b5-135f-40ce-9838-babc551e5768",
+                            "keyword": "dc186624-641f-4999-82a6-d998d971a4f0",
+                            "id": "1"
+                        }
+                    ],
+                    "dropTable": []
+                }
+            ],
+            "hidden": false,
+            "isProps": false,
+            "configurable": {
+                "name": "text",
+                "description": "text",
+                "displayColumn": "columnSelect@name",
+                "columnSelect@name@displayColumn": {
+                    "allowedTypes": [
+                        "int",
+                        "float",
+                        "text",
+                        "longtext"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "keywords",
+            "description": "card keywords",
+            "displayColumn": "id",
+            "guid": "dc184815-0e1d-4366-8a44-65a34a8f5dc5",
+            "columns": [
+                {
+                    "typeStr": "text",
+                    "guid": "857ac29b-75b1-472e-8e93-f7a91a0bf9a5",
+                    "name": "description",
+                    "description": "text field",
+                    "defaultValue": "",
+                    "iconName": "newText",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "defaultValue": "text"
+                    }
+                },
+                {
+                    "typeStr": "bool",
+                    "guid": "4673db3a-2a23-4780-88f1-35e509e97018",
+                    "description": "bool field",
+                    "name": "implemented",
+                    "defaultValue": false,
+                    "iconName": "newBool",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "defaultValue": "bool"
+                    }
+                },
+                {
+                    "typeStr": "props",
+                    "guid": "acc97fe3-6bbe-42b3-9b3d-b4df1b820511",
+                    "name": "trigger",
+                    "description": "new properties field",
+                    "sheet": "54f5eadf-d5ed-4a4c-bccf-ce029c71c7b2",
+                    "defaultValue": {},
+                    "iconName": "newProps",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text"
+                    }
+                }
+            ],
+            "lines": [
+                {
+                    "guid": "ee102472-7bd5-47c8-a83e-180d696c775d",
+                    "id": "obstacle",
+                    "description": "wont discard if the track is full of obstacles",
+                    "implemented": true,
+                    "trigger": {
+                        "guid": "76db3075-bc96-46f7-bc19-fda8280288ed",
+                        "phase": "pre",
+                        "trigger": "06284345-de25-4fa3-88db-740e89b01dc4",
+                        "target": "self"
+                    }
+                },
+                {
+                    "guid": "364b7812-8096-4655-b5f6-3009bf785a94",
+                    "id": "cycles",
+                    "description": "cycles back into the deck when discarded",
+                    "implemented": true,
+                    "trigger": {
+                        "guid": "4f2d2501-68f3-46ec-8bc9-f69929e51003",
+                        "phase": "post",
+                        "trigger": "06284345-de25-4fa3-88db-740e89b01dc4",
+                        "target": "self"
+                    }
+                },
+                {
+                    "guid": "127b7b57-eebb-4931-9bc1-1cfb7cbda4ba",
+                    "id": "rejuvenate",
+                    "description": "heals when discarded",
+                    "implemented": true,
+                    "trigger": {
+                        "guid": "cef2c037-05bb-4a13-91bd-161b391c7ec7",
+                        "phase": "pre",
+                        "trigger": "06284345-de25-4fa3-88db-740e89b01dc4",
+                        "target": "self"
+                    }
+                },
+                {
+                    "guid": "0b4d97d8-a7ae-453e-8842-0558ed776a95",
+                    "id": "exit",
+                    "description": "exits the floor",
+                    "implemented": true,
+                    "trigger": {
+                        "guid": "ae775d2e-116e-442c-a27c-d3ca9c976c28",
+                        "phase": "post",
+                        "trigger": "06284345-de25-4fa3-88db-740e89b01dc4",
+                        "target": "self"
+                    }
+                },
+                {
+                    "guid": "dc186624-641f-4999-82a6-d998d971a4f0",
+                    "id": "lootable",
+                    "description": "on track discard this goes into inventory",
+                    "implemented": false,
+                    "trigger": {
+                        "guid": "1a1a5431-b35c-45d0-9d53-4ad72c67f3c2",
+                        "phase": "pre",
+                        "trigger": "06284345-de25-4fa3-88db-740e89b01dc4",
+                        "target": "self"
+                    }
+                },
+                {
+                    "guid": "e381798d-971d-4f82-a38d-ea548b497b59",
+                    "id": "vengeance",
+                    "description": "goes to the top of the draw pile when discarded",
+                    "implemented": true,
+                    "trigger": {
+                        "guid": "69609232-6b7d-460f-a7a5-351880b49dd6",
+                        "phase": "post",
+                        "trigger": "06284345-de25-4fa3-88db-740e89b01dc4",
+                        "target": "self"
+                    }
+                },
+                {
+                    "guid": "726e3110-2212-4bad-8f27-ec74de763fe7",
+                    "id": "ranged",
+                    "description": "can attack at >2 distance",
+                    "implemented": false,
+                    "trigger": {}
+                },
+                {
+                    "guid": "3452f997-c577-45a8-acac-9b8b676c77e5",
+                    "id": "eat",
+                    "description": "grants 2 fullness on use",
+                    "implemented": false,
+                    "trigger": {
+                        "guid": "72f2934e-5fc8-4085-8518-d9d4e7410a61",
+                        "phase": "pre",
+                        "trigger": "015b6677-c84e-4b4f-9423-2d6b8b0661a3",
+                        "target": "self"
+                    }
+                }
+            ],
+            "hidden": false,
+            "isProps": false,
+            "configurable": {
+                "name": "text",
+                "description": "text",
+                "displayColumn": "columnSelect@name",
+                "columnSelect@name@displayColumn": {
+                    "allowedTypes": [
+                        "int",
+                        "float",
+                        "text",
+                        "longtext"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "keywords",
+            "description": "list@26410e70-1719-447a-ad54-9535289342fa",
+            "displayColumn": "id",
+            "guid": "3a60bec9-09b5-4137-b3c2-6ddbeb507544",
+            "columns": [
+                {
+                    "typeStr": "lineReference",
+                    "guid": "2cea3548-5d62-45ac-9231-1cae6deb66f3",
+                    "name": "keyword",
+                    "description": "new line reference field",
+                    "sheet": "dc184815-0e1d-4366-8a44-65a34a8f5dc5",
+                    "defaultValue": "",
+                    "iconName": "newLineLink",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "sheet": "sheetSelect",
+                        "defaultValue": "lineSelect@sheet"
+                    }
+                }
+            ],
+            "lines": [],
+            "hidden": true,
+            "isProps": false,
+            "parentSheetGUID": "26410e70-1719-447a-ad54-9535289342fa",
+            "columnGUID": "14ef2ab4-38d9-4e77-a4a9-27096de092d5"
+        },
+        {
+            "name": "logicTriggers",
+            "description": "description of what the sheet is",
+            "displayColumn": "id",
+            "guid": "9f81da92-9ca0-40cf-8f19-a6708db51354",
+            "columns": [],
+            "lines": [
+                {
+                    "guid": "2bc8feba-69ee-4fc3-abdf-3ed216fd4688",
+                    "id": "move"
+                },
+                {
+                    "guid": "8e0ff7ea-932c-4c76-841e-6183316f56ab",
+                    "id": "wait"
+                },
+                {
+                    "guid": "7a5e0077-5f07-4ce5-98b3-cbef5bed5c38",
+                    "id": "draw"
+                },
+                {
+                    "guid": "06284345-de25-4fa3-88db-740e89b01dc4",
+                    "id": "discard"
+                },
+                {
+                    "guid": "e0b5e390-0e63-4205-8223-296105b2e1e4",
+                    "id": "attackedByPlayer"
+                },
+                {
+                    "guid": "6c4d260a-e952-4bdc-b9b8-45fcca2d6769",
+                    "id": "destroyed"
+                },
+                {
+                    "guid": "07239113-e257-4a50-ae46-d467d468acdb",
+                    "id": "attacking"
+                },
+                {
+                    "guid": "015b6677-c84e-4b4f-9423-2d6b8b0661a3",
+                    "id": "use"
+                }
+            ],
+            "hidden": false,
+            "isProps": false,
+            "configurable": {
+                "name": "text",
+                "description": "text",
+                "displayColumn": "columnSelect@name",
+                "columnSelect@name@displayColumn": {
+                    "allowedTypes": [
+                        "int",
+                        "float",
+                        "text",
+                        "longtext"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "dropTable",
+            "description": "list@26410e70-1719-447a-ad54-9535289342fa",
+            "displayColumn": "id",
+            "guid": "e03bf4e4-61b4-4a9d-b610-255f052726d5",
+            "columns": [
+                {
+                    "typeStr": "lineReference",
+                    "guid": "2fd22312-6d5d-44c4-bf46-45882174b528",
+                    "name": "dropOption",
+                    "description": "new line reference field",
+                    "sheet": "26410e70-1719-447a-ad54-9535289342fa",
+                    "defaultValue": "",
+                    "iconName": "newLineLink",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "sheet": "sheetSelect",
+                        "defaultValue": "lineSelect@sheet"
+                    }
+                },
+                {
+                    "typeStr": "int",
+                    "guid": "c91bdac5-ea82-4b2b-a6e1-70fc8c726dca",
+                    "description": "int field",
+                    "name": "weight",
+                    "min": -10000,
+                    "max": 100000,
+                    "defaultValue": 0,
+                    "iconName": "newInt",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "min": "int",
+                        "max": "int",
+                        "defaultValue": "int"
+                    }
+                }
+            ],
+            "lines": [],
+            "hidden": true,
+            "isProps": false,
+            "parentSheetGUID": "26410e70-1719-447a-ad54-9535289342fa",
+            "columnGUID": "b596124e-9372-4488-9cfb-d26adb31aae6"
+        },
+        {
+            "name": "trigger",
+            "description": "props@dc184815-0e1d-4366-8a44-65a34a8f5dc5",
+            "displayColumn": "id",
+            "guid": "54f5eadf-d5ed-4a4c-bccf-ce029c71c7b2",
+            "columns": [
+                {
+                    "typeStr": "enum",
+                    "guid": "59b7ff68-6970-477c-a0eb-1637731e37a9",
+                    "name": "phase",
+                    "description": "phase",
+                    "options": "pre, post",
+                    "defaultValue": "post",
+                    "iconName": "newEnum",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "defaultValue": "text",
+                        "options": "text"
+                    }
+                },
+                {
+                    "typeStr": "lineReference",
+                    "guid": "52f7f711-0ccf-4adc-9bff-89279af84d66",
+                    "name": "trigger",
+                    "description": "new line reference field",
+                    "sheet": "9f81da92-9ca0-40cf-8f19-a6708db51354",
+                    "defaultValue": "",
+                    "iconName": "newLineLink",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "sheet": "sheetSelect",
+                        "defaultValue": "lineSelect@sheet"
+                    }
+                },
+                {
+                    "typeStr": "enum",
+                    "guid": "04faa6c0-3b11-4ef2-8612-8aca9b632353",
+                    "name": "target",
+                    "description": "new enum field",
+                    "options": "self, any",
+                    "defaultValue": "self",
+                    "iconName": "newEnum",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "defaultValue": "text",
+                        "options": "text"
+                    }
+                }
+            ],
+            "lines": [],
+            "hidden": true,
+            "isProps": true,
+            "parentSheetGUID": "dc184815-0e1d-4366-8a44-65a34a8f5dc5",
+            "columnGUID": "acc97fe3-6bbe-42b3-9b3d-b4df1b820511"
+        }
+    ]
+}

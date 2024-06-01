@@ -1,0 +1,65 @@
+{
+    "sheets": [
+        {
+            "name": "testSheet",
+            "description": "some description of this sheet",
+            "displayColumn": "id",
+            "guid": "9fff6bb7-ba2c-44fa-9647-b6820f005ccc",
+            "columns": [
+                {
+                    "typeStr": "int",
+                    "guid": "c57455a5-bc8b-4a0a-862b-cac8d87656be",
+                    "description": "int field",
+                    "name": "newInt",
+                    "min": -10000,
+                    "max": 100000,
+                    "defaultValue": 0,
+                    "iconName": "newInt",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "min": "int",
+                        "max": "int",
+                        "defaultValue": "int"
+                    }
+                },
+                {
+                    "typeStr": "bool",
+                    "guid": "72003aac-5ce9-437c-a38b-f4fff5ebdb68",
+                    "description": "bool field",
+                    "name": "newBool",
+                    "defaultValue": true,
+                    "iconName": "newBool",
+                    "configurable": {
+                        "name": "text",
+                        "description": "text",
+                        "defaultValue": "bool"
+                    }
+                }
+            ],
+            "lines": [
+                {
+                    "guid": "c4f9e505-82f7-42d9-a603-31604bb81ea4",
+                    "id": "0",
+                    "newInt": 0,
+                    "newBool": true
+                }
+            ],
+            "hidden": false,
+            "isProps": false,
+            "configurable": {
+                "name": "text",
+                "description": "text",
+                "displayColumn": "columnSelect@name",
+                "columnSelect@name@displayColumn": {
+                    "allowedTypes": [
+                        "int",
+                        "float",
+                        "text",
+                        "longtext"
+                    ]
+                }
+            }
+        }
+    ]
+}
