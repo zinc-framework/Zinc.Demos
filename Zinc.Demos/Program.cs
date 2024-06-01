@@ -5,8 +5,6 @@ using Zinc.Sandbox;
 using Zinc.Sandbox.Demos;
 using Collision = Zinc.Sandbox.Demos.Collision;
 
-NativeLibResolver.kick();
-
 InputSystem.Events.Key.Down += (key,_) =>  {
 	if (key == Key.C)
 	{
