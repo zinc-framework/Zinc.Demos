@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Zinc.Core\Zinc.Core.csproj" />
+    <ProjectReference Include="..\Zinc\Zinc.csproj" />
     <!-- //fix these -->
     <!-- <ProjectReference Include="..\Depot.SourceGenerator\Depot.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
     <ProjectReference Include="..\Zinc.Magic\Zinc.Magic\Zinc.Magic.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/> -->
