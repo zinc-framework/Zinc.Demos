@@ -12,11 +12,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\res\**\*"/>
-    <Content Include="..\res\**\*">
+    <AdditionalFiles Include="res\**\*"/>
+    <Content Include="res\**\*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Zinc\Zinc.csproj" />
