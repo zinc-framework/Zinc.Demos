@@ -18,64 +18,61 @@ public class Collision : Scene
     private Shape ptC;
     public override void Create()
     {
-        static_colliderA = new Shape(no_collide,
-            collisionStart: (self, other) =>
-            {
-                self.Entity.Get<ShapeRenderer>().Color = collide;
-            },
-            collisionStop: (self, other) =>
-            {
-                self.Entity.Get<ShapeRenderer>().Color = no_collide;
-            })
-        {
+        static_colliderA = new Shape(){
             Name = "static_colliderA",
             X = Engine.Width/2f,
             Y = Engine.Height/2f,
-            ColliderActive = true,
-            // Enabled = false
-        };
-        
-        static_colliderB = new Shape(
-            no_collide,
-            collisionStart: (self, other) =>
+            Color = no_collide,
+            Collider_OnStart = (self, other) =>
             {
                 self.Entity.Get<ShapeRenderer>().Color = collide;
             },
-            collisionStop: (self, other) =>
+            Collider_OnEnd = (self, other) =>
             {
                 self.Entity.Get<ShapeRenderer>().Color = no_collide;
-            })
-        {
+            },
+            Collider_Active = true,
+        };
+
+        static_colliderB = new Shape(){
             Name = "static_colliderB",
             X = Engine.Width/2f - 200f,
             Y = Engine.Height/2f - 200f,
-            ColliderActive = true,
             PivotX = 16,
             PivotY = 16,
-        };
-        
-        static_colliderC = new Shape(no_collide,
-            collisionStart: (self, other) =>
+            Color = no_collide,
+            Collider_OnStart = (self, other) =>
             {
                 self.Entity.Get<ShapeRenderer>().Color = collide;
             },
-            collisionStop: (self, other) =>
+            Collider_OnEnd = (self, other) =>
             {
                 self.Entity.Get<ShapeRenderer>().Color = no_collide;
-            })
-        {
-            Name = "static_colliderB",
-            X = Engine.Width/2f + 200f,
-            Y = Engine.Height/2f - 200f,
-            ColliderActive = true,
-            PivotX = 16,
-            PivotY = 16,
-            // Enabled = false
+            },
+            Collider_Active = true,
         };
 
-        ptA = new Shape(pt, 5, 5){Name ="ptA"};
-        ptB = new Shape(pt, 5, 5){Name ="ptB"};;
-        ptC = new Shape(pt, 5, 5){Name ="ptC"};;
+        static_colliderC = new Shape(){
+            Name = "static_colliderC",
+            X = Engine.Width/2f + 200f,
+            Y = Engine.Height/2f - 200f,
+            PivotX = 16,
+            PivotY = 16,
+            Color = no_collide,
+            Collider_OnStart = (self, other) =>
+            {
+                self.Entity.Get<ShapeRenderer>().Color = collide;
+            },
+            Collider_OnEnd = (self, other) =>
+            {
+                self.Entity.Get<ShapeRenderer>().Color = no_collide;
+            },
+            Collider_Active = true,
+        };
+
+        ptA = new Shape(){Name ="ptA", Color = pt, Width = 5, Height = 5};
+        ptB = new Shape(){Name ="ptB", Color = pt, Width = 5, Height = 5};;
+        ptC = new Shape(){Name ="ptC", Color = pt, Width = 5, Height = 5};;
     }
 
     public override void Update(double dt)

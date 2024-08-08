@@ -24,15 +24,16 @@ public class EntityEmitter : Scene
                 var rand = RandUnitCircle();
                 var dx = rand.X * 4;
                 var dy = rand.Y * 4;
-                new Shape(new Color(Palettes.ENDESGA[Quick.Random.Next(Palettes.ENDESGA.Count)]),update:(self, dt) =>
+                new Shape(update:(self, dt) =>
                 {
                     self.X += dx;
                     self.Y += dy;
                 }) 
                 {
+                    Color = new Color(Palettes.ENDESGA[Quick.Random.Next(Palettes.ENDESGA.Count)]),
                     X = startPos.X,
                     Y = startPos.Y,
-                    ColliderActive = false
+                    Collider_Active = false
                 };
             }
             timer = 0;

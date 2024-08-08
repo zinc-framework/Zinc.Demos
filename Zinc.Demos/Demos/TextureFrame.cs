@@ -7,7 +7,8 @@ public class TextureFrame : Scene
     private SpriteData conscriptFrame0;
     public override void Preload()
     {
-        conscriptImage = new Resources.Texture("res/conscript.png");
+        // conscriptImage = new Resources.Texture("res/conscript.png");
+        conscriptImage = Res.Assets.conscript.Texture;
         
         conscriptFrame0 = new(conscriptImage, new Rect(0,0,64,64));
     }

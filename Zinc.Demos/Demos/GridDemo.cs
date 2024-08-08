@@ -14,8 +14,26 @@ public class GridDemo : Scene
     {
         foreach (var p in g.Points)
         {
-            shapes1.Add(new Shape(shape1c,5,5) { X = (int)p.X, Y = (int)p.Y, ColliderActive = false, PivotX = 2.5f, PivotY = 2.5f});
-            shapes2.Add(new Shape(shape2c,5,5) { X = (int)p.X, Y = (int)p.Y, ColliderActive = false, PivotX = 2.5f, PivotY = 2.5f});
+            shapes1.Add(new Shape(){
+                Color = shape1c, 
+                Width = 5, 
+                Height = 5,
+                X = (int)p.X, 
+                Y = (int)p.Y, 
+                Collider_Active = false,
+                PivotX = 2.5f,
+                PivotY = 2.5f}
+            );
+            shapes2.Add(new Shape(){
+                Color = shape2c, 
+                Width = 5, 
+                Height = 5,
+                X = (int)p.X, 
+                Y = (int)p.Y, 
+                Collider_Active = false,
+                PivotX = 2.5f,
+                PivotY = 2.5f}
+            );
         }
     }
 
