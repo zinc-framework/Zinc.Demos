@@ -43,16 +43,15 @@ public class Physics : Scene
             var a = new Sprite(conscript) {
                 X = (int)startPos.x,
                 Y = (int)startPos.y,
-                ColliderActive = false
+                Collider_Active = false
             };
             var poly = Engine.PhysicsWorld.CreatePolygonWorldSpace(
-                new Vector2[]
-                {
+                [
                     new Vector2(startPos.x, startPos.y),
                     new Vector2(startPos.x, startPos.y + 64),
                     new Vector2(startPos.x + 64, startPos.y + 64),
                     new Vector2(startPos.x + 64, startPos.y)
-                },1f);
+                ],1f);
             var bod = Engine.PhysicsWorld.CreateDynamicBody(startPos, 0f, new []{poly});
             bods.Add(a,bod);
             // bod.AddForce(new Vector2(0,9.8f));

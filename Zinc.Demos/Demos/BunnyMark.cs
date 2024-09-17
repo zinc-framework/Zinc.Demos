@@ -52,7 +52,7 @@ public class BunnyMark : Scene
 
 public record struct BunnyMarkComponent(float x, float y);
 
-public class TestBunny : Entity
+public class TestBunny : SceneEntity
 {
     public SpriteData Data { get; init; }
     public TestBunny(SpriteData spriteData, float velx, float vely, Scene? scene = null, bool startEnabled = true) : base(startEnabled,scene)
@@ -66,11 +66,11 @@ public class TestBunny : Entity
 
 public class BunnySystem : DSystem, IUpdateSystem
 {
-    QueryDescription bunny = new QueryDescription().WithAll<ActiveState,HasManagedOwner,Position,BunnyMarkComponent>();      // Should have all specified components
+    QueryDescription bunny = new QueryDescription().WithAll<ActiveState,EntityID,Position,BunnyMarkComponent>();      // Should have all specified components
     public void Update(double dt)
     {
         float randCheck = 0;
-        Engine.ECSWorld.Query(in bunny, (Arch.Core.Entity e, ref HasManagedOwner owner,  ref Position pos, ref BunnyMarkComponent vel) => {
+        Engine.ECSWorld.Query(in bunny, (Arch.Core.Entity e, ref Position pos, ref BunnyMarkComponent vel) => {
             pos.X += vel.x;
             pos.Y += vel.y;
             
