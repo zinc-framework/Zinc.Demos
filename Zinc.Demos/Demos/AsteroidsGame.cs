@@ -6,9 +6,14 @@ namespace Zinc.Sandbox.Demos;
 [DemoScene("15 Asteroids")]
 public class AsteroidsGame : Scene
 {
+    public class Bullet(SpriteData spriteData, Scene? scene = null, bool startEnabled = true, Action<Sprite, double>? update = null) 
+		: Sprite(spriteData, scene, startEnabled, update);
+    public class Asteroid(SpriteData spriteData, Scene? scene = null, bool startEnabled = true, Action<Sprite, double>? update = null) 
+		: Sprite(spriteData, scene, startEnabled, update);
+    public class Player(SpriteData spriteData, Scene? scene = null, bool startEnabled = true, Action<Sprite, double>? update = null) 
+		: Sprite(spriteData, scene, startEnabled, update);
     private Resources.Texture conscriptImage;
     private SpriteData fullConscript;
-
     private Sprite player;
     public override void Preload()
     {
@@ -18,52 +23,41 @@ public class AsteroidsGame : Scene
 
     public override void Create()
     {
-        player = new Sprite(fullConscript){Name = "player",X = Engine.Width/2f,Y = Engine.Height/2f,PivotX = 32,PivotY = 32};
-        player.ECSEntity.Add(new Player());
+        player = new Player(fullConscript){Name = "player",X = Engine.Width/2f,Y = Engine.Height/2f,PivotX = 32,PivotY = 32};
         InputSystem.Events.Key.Down += OnKeyDown;
+
+		Engine.Cursor.Update = (cursor,dt) => {
+			player.X = ((Pointer)cursor).X;
+			player.Y = ((Pointer)cursor).Y;
+		};
     }
 
     double bulletCooldown = 0;
-    private List<Sprite> bullets = new ();
-    private List<Sprite> asteroids = new ();
+    private List<Bullet> bullets = new ();
+    private List<Asteroid> asteroids = new ();
     private int bulletCount = 0;
     private void OnKeyDown(Key key, List<Modifiers> arg2)
     {
-	    // (float dx, float dy) v = key switch {
-		   //  Key.LEFT => (-0.2f, 0),
-		   //  Key.RIGHT => (0.2f, 0),
-		   //  Key.UP => (0, -0.2f),
-		   //  Key.DOWN => (0, 0.2f),
-		   //  _ => (0, 0)
-	    // };
-	    // player.SetVelocity(player.DX + v.dx, player.DY + v.dy);
-
 	    if (key == Key.SPACE)
 	    {
 		    //spawn bullets
-		    var bullet = new Sprite(fullConscript,
-			    collisionStart: (self,other) =>
-			    {
-				    if (other.Entity.Has<Asteroid>())
-				    {
-					    asteroids.RemoveAt(asteroids.FindIndex(ast => ast.ECSEntity.Id == other.Entity.Id));
-					    other.Destroy();
-					    bullets.RemoveAt(bullets.FindIndex(bullet => bullet.ECSEntity.Id == self.Entity.Id));
-					    self.Destroy();
-				    }
-			    },
-			    update: (self,dt) =>
-			    {
-				    self.X += 1.5f;
-			    })
-		    {
-			    Name = "bullet" + bulletCount,
-			    X = player.X, 
-			    Y = player.Y,
-			    ColliderActive = true,
-		    };
-		    bullet.ECSEntity.Add(new Bullet());
-		    bullets.Add(bullet);
+			bullets.Add(new Bullet(fullConscript, update: (self,dt) => {
+					((Bullet)self).X += 1.5f;
+				}){
+					Name = "bullet" + bulletCount,
+					X = player.X, 
+					Y = player.Y,
+					Collider_Active = true,
+					Collider_OnStart = (self,other) =>  {
+						if (other is Asteroid asteroid)
+						{
+							asteroids.Remove(asteroid);
+							asteroid.Destroy();
+							bullets.Remove((Bullet)self);
+							self.Destroy();
+						}
+					}
+		    });
 		    bulletCooldown = 0f;
 		    bulletCount++;
 	    }
@@ -72,13 +66,12 @@ public class AsteroidsGame : Scene
     private double timer = 0;
     public override void Update(double dt)
     {
-	    Quick.MoveToMouse(player);
 	    //spawn asteroids
 	    timer += Engine.DeltaTime;
 	    bulletCooldown += Engine.DeltaTime;
 	    if (timer > 5)
 	    {
-	    	var a = new Sprite(fullConscript,
+			asteroids.Add(new Asteroid(fullConscript,
 			    update: (self,dt) =>
 			    {
 				    Console.WriteLine("asteroid update");
@@ -87,10 +80,8 @@ public class AsteroidsGame : Scene
 			    Name = "Asteroid",
 	    		X = Engine.Width, 
 	    		Y = (int)((Engine.Height / 2f) + MathF.Sin(Quick.RandFloat() * 2 - 1) * Engine.Height / 2.5f),
-			    ColliderActive = true
-	    	};
-		    a.ECSEntity.Add(new Asteroid());
-		    asteroids.Add(a);
+			    Collider_Active = true
+	    	});
 	    	timer = 0;
 	    }
 
@@ -120,9 +111,6 @@ public class AsteroidsGame : Scene
     {
 	    InputSystem.Events.Key.Down -= OnKeyDown;
     }
-    public readonly record struct Bullet();
-    public readonly record struct Asteroid();
-    public readonly record struct Player();
 }
 
 /*

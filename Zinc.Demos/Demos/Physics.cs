@@ -5,6 +5,7 @@ namespace Zinc.Sandbox.Demos;
 [DemoScene("07 Physics")]
 public class Physics : Scene
 {
+    //TODO: make physics and actual system to get rid of the jank setters
     private Resources.Texture conscriptImage;
     private SpriteData conscript;
     public override void Preload()
@@ -62,7 +63,8 @@ public class Physics : Scene
         foreach (var b in bods)
         {
             b.Value.AddForce(new Vector2(0,9.8f));
-            b.Key.SetPosition((int)b.Value.Position.x,(int)b.Value.Position.y,b.Value.Angle,b.Key.ScaleX,b.Key.ScaleY,b.Key.PivotX,b.Key.PivotY);
+            b.Key.X = (int)b.Value.Position.x;
+            b.Key.Y = (int)b.Value.Position.y;
         }
     }
 }

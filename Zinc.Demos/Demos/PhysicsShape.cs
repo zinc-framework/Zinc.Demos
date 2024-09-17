@@ -56,7 +56,8 @@ public class PhysicsShape : Scene
         foreach (var b in bods)
         {
             b.Value.AddForce(new Vector2(0,9.8f));
-            b.Key.SetPosition((int)b.Value.Position.x,(int)b.Value.Position.y,b.Value.Angle,b.Key.ScaleX,b.Key.ScaleY,b.Key.PivotX,b.Key.PivotY);
+            b.Key.X = (int)b.Value.Position.x;
+            b.Key.Y = (int)b.Value.Position.y;
         }
     }
 }

@@ -66,41 +66,41 @@ public class TestBunny : Entity
 
 public class BunnySystem : DSystem, IUpdateSystem
 {
-    QueryDescription bunny = new QueryDescription().WithAll<Active,HasManagedOwner,Position,BunnyMarkComponent>();      // Should have all specified components
+    QueryDescription bunny = new QueryDescription().WithAll<ActiveState,HasManagedOwner,Position,BunnyMarkComponent>();      // Should have all specified components
     public void Update(double dt)
     {
         float randCheck = 0;
         Engine.ECSWorld.Query(in bunny, (Arch.Core.Entity e, ref HasManagedOwner owner,  ref Position pos, ref BunnyMarkComponent vel) => {
-            pos.x += vel.x;
-            pos.y += vel.y;
+            pos.X += vel.x;
+            pos.Y += vel.y;
             
             vel.y += 9.8f;
             
-            if (pos.x > Engine.Width)
+            if (pos.X > Engine.Width)
             {
                 vel.x *= -1;
-                pos.x = Engine.Width;
+                pos.X = Engine.Width;
             }
-            else if (pos.x < 0)
+            else if (pos.X < 0)
             {
                 vel.x *= -1;
-                pos.x = 0;
+                pos.X = 0;
             }
             
-            if (pos.y > Engine.Height)
+            if (pos.Y > Engine.Height)
             {
                 vel.y *= -0.85f;
-                pos.y = Engine.Height;
+                pos.Y = Engine.Height;
                 randCheck = Quick.RandFloat();
                 if (randCheck > 0.5)
                 {
                     vel.y -= (randCheck * 6);
                 }
             }
-            else if (pos.y < 0)
+            else if (pos.Y < 0)
             {
                 vel.y = 0;
-                pos.y = 0;
+                pos.Y = 0;
             }
         });
     }
