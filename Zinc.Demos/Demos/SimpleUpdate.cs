@@ -21,12 +21,12 @@ public class SimpleUpdate : Scene
         startPos = new((Engine.Width / 2f) - 32, (Engine.Height / 2f) - 32);
         new Sprite(conscriptFrame0, update:(self,dt) => {
 
-            self.X = (int)startPos.X + (int)(Math.Sin(Engine.Time) * 100);
+            self.X = (int)startPos.X + (int)(Math.Sin(Engine.Time) * 200);
             self.Rotation = (float)Engine.Time;
             var scale = Math.Cos(Engine.Time) * 2;
             self.ScaleX = (float)scale;
             self.ScaleY = (float)scale;
-            
+
         })
         {
             X = (int)startPos.X,

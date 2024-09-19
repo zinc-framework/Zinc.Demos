@@ -33,10 +33,10 @@ public class Interaction : Scene
     void KeyDownListener(Key key, List<Modifiers> mods)
     {
         (float dx, float dy) v = key switch {
-            Key.LEFT => (-1f, 0),
-            Key.RIGHT => (1f, 0),
-            Key.UP => (0, -1f),
-            Key.DOWN => (0, 1f),
+            Key.LEFT => (-0.3f, 0),
+            Key.RIGHT => (0.3f, 0),
+            Key.UP => (0, -0.3f),
+            Key.DOWN => (0, 0.3f),
             _ => (0, 0)
         }; 
         DX += v.dx;
