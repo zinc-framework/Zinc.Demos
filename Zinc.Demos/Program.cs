@@ -17,7 +17,7 @@ Engine.Run(new Engine.RunOptions(1920,1080,"zinc",
 	() =>
 	{
 		demoTypes = Util.GetDemoSceneTypes().ToList();
-		var scene = new Texture();
+		var scene = new Collision();
 		Console.WriteLine("mounting scene now");
 		scene.Mount(0);
 		Console.WriteLine("scene mounted");
