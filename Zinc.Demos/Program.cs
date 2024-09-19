@@ -17,8 +17,10 @@ Engine.Run(new Engine.RunOptions(1920,1080,"zinc",
 	() =>
 	{
 		demoTypes = Util.GetDemoSceneTypes().ToList();
-		var scene = new ShapeDemo();
+		var scene = new Texture();
+		Console.WriteLine("mounting scene now");
 		scene.Mount(0);
+		Console.WriteLine("scene mounted");
 		scene.Load(() => scene.Start());
 	}, 
 	() =>
