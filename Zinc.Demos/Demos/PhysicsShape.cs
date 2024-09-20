@@ -35,7 +35,7 @@ public class PhysicsShape : Scene
         {
             var startPos = new Vector2(InputSystem.MouseX, InputSystem.MouseY);
             var a = new Shape() {
-                Color = new Color(Palettes.ENDESGA[Quick.Random.Next(Palettes.ENDESGA.Count)]),
+                Renderer_Color = new Color(Palettes.ENDESGA[Quick.Random.Next(Palettes.ENDESGA.Count)]),
                 X = (int)startPos.x,
                 Y = (int)startPos.y,
                 Collider_Active = false

@@ -23,7 +23,7 @@ public class AsteroidsGame : Scene
 
     public override void Create()
     {
-        player = new Player(fullConscript){Name = "player",X = Engine.Width/2f,Y = Engine.Height/2f,PivotX = 32,PivotY = 32};
+        player = new Player(fullConscript){Name = "player",X = Engine.Width/2f,Y = Engine.Height/2f};
         InputSystem.Events.Key.Down += OnKeyDown;
 
 		Engine.Cursor.Update = (cursor,dt) => {

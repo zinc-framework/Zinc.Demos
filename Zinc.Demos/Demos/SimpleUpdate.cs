@@ -31,8 +31,6 @@ public class SimpleUpdate : Scene
         {
             X = (int)startPos.X,
             Y = (int)startPos.Y,
-            PivotX = 32,
-            PivotY = 32
         };
     }
 }

@@ -30,7 +30,7 @@ public class EntityEmitter : Scene
                     self.Y += dy;
                 }) 
                 {
-                    Color = new Color(Palettes.ENDESGA[Quick.Random.Next(Palettes.ENDESGA.Count)]),
+                    Renderer_Color = new Color(Palettes.ENDESGA[Quick.Random.Next(Palettes.ENDESGA.Count)]),
                     X = startPos.X,
                     Y = startPos.Y,
                     Collider_Active = false

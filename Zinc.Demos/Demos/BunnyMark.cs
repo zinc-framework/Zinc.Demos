@@ -46,7 +46,6 @@ public class BunnyMark : Scene
     }
 }
 
-
 public record struct BunnyMarkComponent(float VelX, float VelY) : IComponent;
 [Component<BunnyMarkComponent>]
 public partial class Bunny : Sprite
@@ -59,6 +58,7 @@ public partial class Bunny : Sprite
         VelY = RandFloat() * 5;
     }
 }
+
 
 public class BunnySystem : DSystem, IUpdateSystem
 {

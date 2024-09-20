@@ -21,14 +21,14 @@ public class Collision : Scene
             Name = "static_colliderA",
             X = Engine.Width/2f,
             Y = Engine.Height/2f,
-            Color = no_collide,
+            Renderer_Color = no_collide,
             Collider_OnStart = (self, other) =>
             {
-                ((Shape)self).Color = collide;
+                ((Shape)self).Renderer_Color = collide;
             },
             Collider_OnEnd = (self, other) =>
             {
-                ((Shape)self).Color = no_collide;
+                ((Shape)self).Renderer_Color = no_collide;
             },
             Collider_Active = true,
         };
@@ -37,16 +37,14 @@ public class Collision : Scene
             Name = "static_colliderB",
             X = Engine.Width/2f - 200f,
             Y = Engine.Height/2f - 200f,
-            PivotX = 16,
-            PivotY = 16,
-            Color = no_collide,
+            Renderer_Color = no_collide,
             Collider_OnStart = (self, other) =>
             {
-                ((Shape)self).Color = collide;
+                ((Shape)self).Renderer_Color = collide;
             },
             Collider_OnEnd = (self, other) =>
             {
-                ((Shape)self).Color = no_collide;
+                ((Shape)self).Renderer_Color = no_collide;
             },
             Collider_Active = true,
         };
@@ -60,36 +58,34 @@ public class Collision : Scene
             Name = "static_colliderC",
             X = Engine.Width/2f + 200f,
             Y = Engine.Height/2f - 200f,
-            PivotX = 16,
-            PivotY = 16,
-            Color = no_collide,
+            Renderer_Color = no_collide,
             Collider_OnStart = (self, other) =>
             {
-                ((Shape)self).Color = collide;
+                ((Shape)self).Renderer_Color = collide;
             },
             Collider_OnEnd = (self, other) =>
             {
-                ((Shape)self).Color = no_collide;
+                ((Shape)self).Renderer_Color = no_collide;
             },
             Collider_Active = true,
         };
 
-        var ptA = new Shape(update:(self,dt) => {
+        var ptA = new Shape(5,5,update:(self,dt) => {
             var pt = Zinc.Collision.GetClosestPoints(Engine.Cursor, static_colliderA);
             self.X = pt.b.Value.X;
             self.Y = pt.b.Value.Y;
-        }){Name ="ptA", Color = pt, Width = 5, Height = 5};
+        }){Name ="ptA", Renderer_Color = pt};
 
-        var ptB = new Shape(update:(self,dt) => {
+        var ptB = new Shape(5,5,update:(self,dt) => {
             var pt = Zinc.Collision.GetClosestPoints(Engine.Cursor, static_colliderB);
             self.X = pt.b.Value.X;
             self.Y = pt.b.Value.Y;
-        } ){Name ="ptB", Color = pt, Width = 5, Height = 5};
+        } ){Name ="ptB", Renderer_Color = pt};
 
-        var ptC = new Shape(update:(self,dt) => {
+        var ptC = new Shape(5,5,update:(self,dt) => {
             var pt = Zinc.Collision.GetClosestPoints(Engine.Cursor, static_colliderC);
             self.X = pt.b.Value.X;
             self.Y = pt.b.Value.Y;
-        }){Name ="ptC", Color = pt, Width = 5, Height = 5};
+        }){Name ="ptC", Renderer_Color = pt};
     }
 }

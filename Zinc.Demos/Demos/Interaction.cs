@@ -25,7 +25,7 @@ public class Interaction : Scene
         {
 	        self.X += DX;
 	        self.Y += DY;
-        }){X = Engine.Width/2f,Y = Engine.Height/2f, PivotX = 32,PivotY = 32};
+        }){X = Engine.Width/2f,Y = Engine.Height/2f};
         Console.WriteLine("subbing");
         InputSystem.Events.Key.Down += KeyDownListener;
     }

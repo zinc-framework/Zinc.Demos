@@ -16,8 +16,6 @@ public class Texture : Scene
         Console.WriteLine(tex.ECSEntityReference.Version); // tex.ECSEntity.Version
         tex.X = Engine.Width / 2f;
         tex.Y = Engine.Height / 2f;
-        tex.PivotX = 256;
-        tex.PivotY = 256;
         tex.Update = (self, dt) =>
         {
             ((Anchor)self).Rotation += (float)dt;
