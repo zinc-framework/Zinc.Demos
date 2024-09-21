@@ -6,12 +6,17 @@ namespace Zinc.Sandbox.Demos;
 [DemoScene("17 Children")]
 public class ChildrenDemo : Scene
 {
-    List<Shape> shapes = new List<Shape>();
+    List<Shape> shapes = new List<Shape>(4);
+    float dim = 16;
     public override void Create()
     {
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < shapes.Capacity; i++)
         {
-            shapes.Add(new Shape(parent: i > 0 ? shapes[i-1] : null)
+            shapes.Add(new Shape(width:dim,height:dim,parent: i > 0 ? shapes[i-1] : null, update:(self, dt) =>
+            {
+                // self.Rotation += Quick.RandFloat() * (float)dt;
+                // self.Renderer_Rotation += Quick.RandFloat() * (float)dt;
+            })
             {
                 Name = $"Shape{i}",
                 X = i == 0 ? Engine.Width / 2f : 48,
@@ -23,11 +28,17 @@ public class ChildrenDemo : Scene
     public override void Update(double dt)
     {
         ImGUIHelper.Wrappers.Window($"rot", Internal.Sokol.ImGuiWindowFlags_.ImGuiWindowFlags_None, () =>{
+            ImGUIHelper.Wrappers.SliderFloat($"size", ref dim, 1, 32, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
             foreach (var shape in shapes)
             {
+                shape.Renderer_Width = dim;
+                shape.Renderer_Height = dim;
                 float r = shape.Rotation;
+                float render_rot = shape.Renderer_Rotation;
                 ImGUIHelper.Wrappers.SliderFloat($"{shape.Name} rot", ref r, 0, 6.28f, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+                ImGUIHelper.Wrappers.SliderFloat($"{shape.Name} render rot", ref render_rot, 0, 6.28f, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
                 shape.Rotation = r;
+                shape.Renderer_Rotation = render_rot;
             }
         });
     }
