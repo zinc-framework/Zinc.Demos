@@ -7,12 +7,13 @@ namespace Zinc.Sandbox.Demos;
 public class ChildrenDemo : Scene
 {
     List<Shape> shapes = new List<Shape>(4);
-    float dim = 16;
+    float scaleX = 1;
+    float scaleY = 1;
     public override void Create()
     {
         for (int i = 0; i < shapes.Capacity; i++)
         {
-            shapes.Add(new Shape(width:dim,height:dim,parent: i > 0 ? shapes[i-1] : null, update:(self, dt) =>
+            shapes.Add(new Shape(width:32,height:32,parent: i > 0 ? shapes[i-1] : null, update:(self, dt) =>
             {
                 // self.Rotation += Quick.RandFloat() * (float)dt;
                 // self.Renderer_Rotation += Quick.RandFloat() * (float)dt;
@@ -30,8 +31,10 @@ public class ChildrenDemo : Scene
         ImGUIHelper.Wrappers.SetNextWindowSize(500,500);
         ImGUIHelper.Wrappers.Window($"rot", Internal.Sokol.ImGuiWindowFlags_.ImGuiWindowFlags_None, () =>{
             
-            ImGUIHelper.Wrappers.SliderFloat($"size", ref dim, 1, 32, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
-            shapes[0].ScaleX = dim;
+            ImGUIHelper.Wrappers.SliderFloat($"scaleX", ref scaleX, 1, 32, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            ImGUIHelper.Wrappers.SliderFloat($"scaleY", ref scaleY, 1, 32, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            shapes[0].ScaleX = scaleX;
+            shapes[0].ScaleY = scaleY;
             // shapes[0].ScaleY = dim;
             
             foreach (var shape in shapes)
