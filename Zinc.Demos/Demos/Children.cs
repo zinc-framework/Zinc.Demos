@@ -27,18 +27,18 @@ public class ChildrenDemo : Scene
 
     public override void Update(double dt)
     {
+        ImGUIHelper.Wrappers.SetNextWindowSize(500,500);
         ImGUIHelper.Wrappers.Window($"rot", Internal.Sokol.ImGuiWindowFlags_.ImGuiWindowFlags_None, () =>{
+            
             ImGUIHelper.Wrappers.SliderFloat($"size", ref dim, 1, 32, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            shapes[0].ScaleX = dim;
+            // shapes[0].ScaleY = dim;
+            
             foreach (var shape in shapes)
             {
-                shape.Renderer_Width = dim;
-                shape.Renderer_Height = dim;
                 float r = shape.Rotation;
-                float render_rot = shape.Renderer_Rotation;
                 ImGUIHelper.Wrappers.SliderFloat($"{shape.Name} rot", ref r, 0, 6.28f, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
-                ImGUIHelper.Wrappers.SliderFloat($"{shape.Name} render rot", ref render_rot, 0, 6.28f, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
                 shape.Rotation = r;
-                shape.Renderer_Rotation = render_rot;
             }
         });
     }

@@ -12,7 +12,7 @@ public class Texture : Scene
         tex.Y = Engine.Height / 2f;
         tex.Update = (self, dt) =>
         {
-            ((Sprite)self).Renderer_Rotation += (float)dt;
+            ((Sprite)self).Rotation += (float)dt;
         };
     }
 }
