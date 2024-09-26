@@ -18,7 +18,7 @@ Engine.Run(new Engine.RunOptions(1920,1080,"zinc",
 	{
 		Engine.drawDebugOverlay = true;
 		demoTypes = Util.GetDemoSceneTypes().ToList();
-		var scene = new Collision();
+		var scene = new ShapeDemo();
 		Console.WriteLine("mounting scene now");
 		scene.Mount(0);
 		Console.WriteLine("scene mounted");

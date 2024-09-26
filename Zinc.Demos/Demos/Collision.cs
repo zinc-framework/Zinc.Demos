@@ -49,6 +49,23 @@ public class Collision : Scene
             Collider_Active = true,
         };
 
+        var collider_d = new Shape(){
+            Name = "collider_d",
+            X = collider_b.X + 100,
+            Y = collider_b.Y + 100,
+            Rotation = 0.5f,
+            Renderer_Color = no_collide,
+            Collider_OnStart = (self, other) =>
+            {
+                ((Shape)self).Renderer_Color = collide;
+            },
+            Collider_OnEnd = (self, other) =>
+            {
+                ((Shape)self).Renderer_Color = no_collide;
+            },
+            Collider_Active = true,
+        };
+
         var collider_c = new Shape(update:(self, dt) =>
             {
                 self.Rotation = (float)Engine.Time;
