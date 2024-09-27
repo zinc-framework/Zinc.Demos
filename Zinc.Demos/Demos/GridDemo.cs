@@ -1,39 +1,55 @@
 using Zinc.Core;
+using Zinc.Core.ImGUI;
 
 namespace Zinc.Sandbox.Demos;
 
 [DemoScene("13 Grid")]
 public class GridDemo : Scene
 {
-    Color shape1c = Palettes.ENDESGA[9];
-    Color shape2c = Palettes.ENDESGA[8];
-    List<Shape> shapes1 = new();
-    List<Shape> shapes2 = new();
-    Grid g = new Grid(new (new(Engine.Width / 2f, Engine.Height / 2f), new(0.5f, 0.5f), 10, 10, new(0.5f, 0.5f), 30, 30));
+    // Color shape1c = Palettes.ENDESGA[9];
+    // Color shape2c = Palettes.ENDESGA[8];
+    // List<Shape> shapes1 = new();
+    // List<Shape> shapes2 = new();
+    Grid g;
     public override void Create()
     {
-        foreach (var p in g.Points)
+        g = new Grid(update: (self, dt) =>{
+            // self.Rotation += (float)dt;
+        })
         {
-            shapes1.Add(new Shape(5,5){
-                Renderer_Color = shape1c, 
-                X = (int)p.X, 
-                Y = (int)p.Y, 
-                Collider_Active = false
-            });
-            shapes2.Add(new Shape(5,5){
-                Renderer_Color = shape2c, 
-                X = (int)p.X, 
-                Y = (int)p.Y, 
-                Collider_Active = false
-            });
+            X = Engine.Width / 2f,
+            Y = Engine.Height / 2f,
+        };
+
+        for (int i = 0; i < 10; i++)
+        {
+            // g.AddChild(new Shape(4,4));
+            g.AddChild(new Shape(4,4,parent:g));
         }
     }
 
     public override void Update(double dt)
     {
-        g.TransformGrid((float)Engine.Time,1f,1f);
-        g.ApplyPositionsToEntites(shapes1);
-        g.TransformGrid(-(float)Engine.Time,MathF.Sin((float)Engine.Time) + 2,MathF.Sin((float)Engine.Time) + 2);
-        g.ApplyPositionsToEntites(shapes2);
+        ImGUIHelper.Wrappers.Window("gridPos",Internal.Sokol.ImGuiWindowFlags_.ImGuiWindowFlags_None,() =>
+        {
+            float X = g.X;
+            float Y = g.Y;
+            float R = g.Rotation;
+            ImGUIHelper.Wrappers.SliderFloat("rotation", ref R, 0, 6.28f,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            ImGUIHelper.Wrappers.SliderFloat("X", ref X, 1, 500f,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            ImGUIHelper.Wrappers.SliderFloat("Y", ref Y, 1, 500f,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            g.Rotation = R;
+            g.X = X;
+            g.Y = Y;
+
+            int cw = g.CellWidth;
+            int ch = g.CellHeight;
+            ImGUIHelper.Wrappers.SliderInt("cell_width", ref cw, 1, 15,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            ImGUIHelper.Wrappers.SliderInt("cell_height", ref ch, 1, 15,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            g.CellWidth = cw;
+            g.CellHeight = ch;
+
+            Console.WriteLine($"g.X: {g.X}, g.Y: {g.Y}, g.Rotation: {g.Rotation}");
+        });
     }
 }
