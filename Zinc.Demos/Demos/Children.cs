@@ -42,6 +42,10 @@ public class ChildrenDemo : Scene
                 float r = shape.Rotation;
                 ImGUIHelper.Wrappers.SliderFloat($"{shape.Name} rot", ref r, 0, 6.28f, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
                 shape.Rotation = r;
+
+                // float xoff = 0;
+                // ImGUIHelper.Wrappers.SliderFloat($"{shape.Name} xoff", ref xoff, 0, 6.28f, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+                // shape.X = (shape.Name == "Shape0" ? Engine.Width / 2f : 48) + xoff;
             }
         });
     }
