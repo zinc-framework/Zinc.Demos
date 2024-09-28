@@ -11,20 +11,22 @@ public class GridDemo : Scene
     // List<Shape> shapes1 = new();
     // List<Shape> shapes2 = new();
     Grid g;
+    int dim = 8;
     public override void Create()
     {
-        g = new Grid(update: (self, dt) =>{
-            // self.Rotation += (float)dt;
+        g = new Grid(cellWidth:dim, cellHeight:dim,update: (self, dt) =>{
+            self.Rotation += (float)dt;
         })
         {
             X = Engine.Width / 2f,
             Y = Engine.Height / 2f,
         };
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < dim * dim; i++)
         {
             // g.AddChild(new Shape(4,4));
-            g.AddChild(new Shape(4,4,parent:g));
+            // g.AddChild(new Shape(4,4,parent:g));
+            new Shape(4,4,parent:g);
         }
     }
 
@@ -44,8 +46,8 @@ public class GridDemo : Scene
 
             int cw = g.CellWidth;
             int ch = g.CellHeight;
-            ImGUIHelper.Wrappers.SliderInt("cell_width", ref cw, 1, 15,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
-            ImGUIHelper.Wrappers.SliderInt("cell_height", ref ch, 1, 15,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            ImGUIHelper.Wrappers.SliderInt("cell_width", ref cw, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            ImGUIHelper.Wrappers.SliderInt("cell_height", ref ch, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
             g.CellWidth = cw;
             g.CellHeight = ch;
 
