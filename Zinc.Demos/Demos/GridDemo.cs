@@ -22,11 +22,11 @@ public class GridDemo : Scene
             Y = Engine.Height / 2f,
         };
 
+        Console.WriteLine(g.GetChildren().Count);
+
         for (int i = 0; i < dim * dim; i++)
         {
-            // g.AddChild(new Shape(4,4));
-            // g.AddChild(new Shape(4,4,parent:g));
-            new Shape(4,4,parent:g);
+            g.AddChild(new Shape(16,16){Name = $"shape{i}"});
         }
     }
 
@@ -34,24 +34,13 @@ public class GridDemo : Scene
     {
         ImGUIHelper.Wrappers.Window("gridPos",Internal.Sokol.ImGuiWindowFlags_.ImGuiWindowFlags_None,() =>
         {
-            float X = g.X;
-            float Y = g.Y;
-            float R = g.Rotation;
-            ImGUIHelper.Wrappers.SliderFloat("rotation", ref R, 0, 6.28f,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
-            ImGUIHelper.Wrappers.SliderFloat("X", ref X, 1, 500f,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
-            ImGUIHelper.Wrappers.SliderFloat("Y", ref Y, 1, 500f,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
-            g.Rotation = R;
-            g.X = X;
-            g.Y = Y;
-
             int cw = g.CellWidth;
             int ch = g.CellHeight;
             ImGUIHelper.Wrappers.SliderInt("cell_width", ref cw, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
             ImGUIHelper.Wrappers.SliderInt("cell_height", ref ch, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
             g.CellWidth = cw;
             g.CellHeight = ch;
-
-            Console.WriteLine($"g.X: {g.X}, g.Y: {g.Y}, g.Rotation: {g.Rotation}");
         });
+
     }
 }
