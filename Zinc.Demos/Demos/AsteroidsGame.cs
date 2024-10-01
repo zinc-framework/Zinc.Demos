@@ -43,6 +43,11 @@ public class AsteroidsGame : Scene
 		    //spawn bullets
 			bullets.Add(new Bullet(fullConscript, update: (self,dt) => {
 					((Bullet)self).X += 1.5f;
+					if (self.X > Engine.Width)
+					{
+						bullets.Remove((Bullet)self);
+						self.Destroy();
+					}
 				}){
 					Name = "bullet" + bulletCount,
 					X = player.X, 
@@ -74,9 +79,14 @@ public class AsteroidsGame : Scene
 			asteroids.Add(new Asteroid(fullConscript,
 			    update: (self,dt) =>
 			    {
-				    Console.WriteLine("asteroid update");
+					if (self.X < -10)
+					{
+						asteroids.Remove((Asteroid)self);
+						self.Destroy();
+					}
 				    self.X -= 1.5f;
-			    }) {
+			    }) 
+			{
 			    Name = "Asteroid",
 	    		X = Engine.Width, 
 	    		Y = (int)((Engine.Height / 2f) + MathF.Sin(Quick.RandFloat() * 2 - 1) * Engine.Height / 2.5f),
@@ -84,27 +94,6 @@ public class AsteroidsGame : Scene
 	    	});
 	    	timer = 0;
 	    }
-
-	    bullets.RemoveAll(b =>
-	    {
-		    if (b.X > Engine.Width)
-		    {
-			    Console.WriteLine("well destory " + b.Name);
-			    b.Destroy();
-			    return true;
-		    }
-		    return false;
-	    });
-	    
-	    asteroids.RemoveAll(a =>
-	    {
-		    if (a.X < -10)
-		    {
-			    a.Destroy();
-			    return true;
-		    }
-		    return false;
-	    });
     }
 
     public override void Cleanup()

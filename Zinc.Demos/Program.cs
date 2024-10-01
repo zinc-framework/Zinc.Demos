@@ -16,7 +16,6 @@ List<DemoSceneInfo> demoTypes = new();
 Engine.Run(new Engine.RunOptions(1920,1080,"zinc", 
 	() =>
 	{
-		Engine.drawDebugOverlay = true;
 		demoTypes = Util.GetDemoSceneTypes().ToList();
 		var scene = new GridDemo();
 		Console.WriteLine("mounting scene now");
