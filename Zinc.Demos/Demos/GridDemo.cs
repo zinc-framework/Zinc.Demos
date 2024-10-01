@@ -1,3 +1,4 @@
+using Volatile;
 using Zinc.Core;
 using Zinc.Core.ImGUI;
 
@@ -6,11 +7,9 @@ namespace Zinc.Sandbox.Demos;
 [DemoScene("13 Grid")]
 public class GridDemo : Scene
 {
-    // Color shape1c = Palettes.ENDESGA[9];
-    // Color shape2c = Palettes.ENDESGA[8];
-    // List<Shape> shapes1 = new();
-    // List<Shape> shapes2 = new();
-    Grid g;
+    Color shape1c = Palettes.ENDESGA[9];
+    Color shape2c = Palettes.ENDESGA[8];
+    Grid g,h;
     int dim = 8;
     public override void Create()
     {
@@ -22,22 +21,51 @@ public class GridDemo : Scene
             Y = Engine.Height / 2f,
         };
 
-        Console.WriteLine(g.GetChildren().Count);
+        for (int i = 0; i < dim * dim; i++)
+        {
+            g.AddChild(new Shape(16,16,shape1c){Name = $"shape{i}"});
+        }
+
+        h = new Grid(cellWidth:dim, cellHeight:dim,update: (self, dt) =>{
+            self.Rotation -= (float)dt;
+        })
+        {
+            X = Engine.Width / 2f,
+            Y = Engine.Height / 2f,
+        };
 
         for (int i = 0; i < dim * dim; i++)
         {
-            g.AddChild(new Shape(16,16){Name = $"shape{i}"});
+            h.AddChild(new Shape(16,16,shape2c){Name = $"shape{i}"});
         }
     }
 
     public override void Update(double dt)
     {
+        //ping pong math function:
+        // float pingPong = MathF.Abs(MathF.Sin((float)Engine.Time));
+        float pingPong = MathF.Sin((float)Engine.Time) + 2f;
+        // g.CellHeight = (int)(pingPong * 16);
+        // g.CellWidth = (int)(pingPong * 16);
+        // h.CellHeight = (int)(pingPong * 16);
+        // h.CellWidth = (int)(pingPong * 16);
+
+        g.ScaleX = pingPong;
+        g.ScaleY = pingPong;
+        h.ScaleX = pingPong;
+        h.ScaleY = pingPong;
+        g.CellWidth = (pingPong * 16);
+        g.CellHeight = (pingPong * 16);
+        h.CellWidth = (pingPong * 16);
+        h.CellHeight = (pingPong * 16);
+
+
         ImGUIHelper.Wrappers.Window("gridPos",Internal.Sokol.ImGuiWindowFlags_.ImGuiWindowFlags_None,() =>
         {
-            int cw = g.CellWidth;
-            int ch = g.CellHeight;
-            ImGUIHelper.Wrappers.SliderInt("cell_width", ref cw, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
-            ImGUIHelper.Wrappers.SliderInt("cell_height", ref ch, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            float cw = g.CellWidth;
+            float ch = g.CellHeight;
+            ImGUIHelper.Wrappers.SliderFloat("cell_width", ref cw, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            ImGUIHelper.Wrappers.SliderFloat("cell_height", ref ch, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
             g.CellWidth = cw;
             g.CellHeight = ch;
         });
