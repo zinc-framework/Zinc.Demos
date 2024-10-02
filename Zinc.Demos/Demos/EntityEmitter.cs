@@ -21,7 +21,7 @@ public class EntityEmitter : Scene
             var startPos = new Vector2(InputSystem.MouseX, InputSystem.MouseY);
             for (int i = 0; i < emissionRate; i++)
             {
-                var rand = RandUnitCircle();
+                var rand = RandUnitCirclePos();
                 var dx = rand.X * 4;
                 var dy = rand.Y * 4;
                 new Shape(update:(self, dt) =>

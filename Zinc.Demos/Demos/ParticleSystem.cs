@@ -1,3 +1,4 @@
+using System.Numerics;
 using Zinc.Core;
 using Zinc.Core.ImGUI;
 using static Zinc.Quick;
@@ -15,7 +16,9 @@ public class ParticleSystem : Scene
     ParticleEmitterConfig config = ParticleEmitterConfig.DefaultConfig;
     public override void Create()
     {
-        emitter = new ParticleEmitter(100,config){
+        var baseConfg = ParticleEmitterConfig.DefaultConfig;
+        
+        emitter = new ParticleEmitter(10000,config){
             X = 400,
             Y = 400,
         };
@@ -26,6 +29,11 @@ public class ParticleSystem : Scene
         // emitter.Emitter_Config = emitter.Emitter_Config with {EmissionRate = 0.1f};
         // MoveToMouse(emitter);
         var rot = emitter.Rotation;
+        emitter.Emitter_Config.Gravity = StandardGravity * 10f;
+        emitter.Emitter_Config.InitialMassFunc = () => 0.1f;
+        emitter.Emitter_Config.InitialAcclerationFunc = () => Vector2.Zero;
+        emitter.Emitter_Config.InitialSpeedFunc = () => RandFloat() * 20f;
+        emitter.Emitter_Config.InitialEmissionDirectionFunc = () => UnitUp * 10;
         DrawEditGUIForObject("emitter",ref config);
         ImGUIHelper.Wrappers.SliderFloat("Rotation", ref rot, 0, 360,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
         emitter.Rotation = rot;
