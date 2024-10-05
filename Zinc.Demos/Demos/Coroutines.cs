@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Numerics;
+using System.Transactions;
 using Arch.Core.Extensions;
+using Zinc.Core;
 
 namespace Zinc.Sandbox.Demos;
 
@@ -8,6 +10,7 @@ namespace Zinc.Sandbox.Demos;
 public class Coroutines : Scene
 {
     Shape s;
+    Coroutine c;
     public override void Create()
     {
         s = new Shape(){
@@ -17,8 +20,7 @@ public class Coroutines : Scene
             Collider_Active = false
         };
         
-        new Coroutine(Patrol(),"patrol");
-        // Core.Coroutines.Start(Patrol(),"patrol");
+        c = new Coroutine(Patrol(),"patrol");
     }
 
     public IEnumerator Patrol()
@@ -32,21 +34,45 @@ public class Coroutines : Scene
                 Renderer_Color = Palettes.ENDESGA[3]
             };
             yield return MoveToLocation(nextPos);
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
     public IEnumerator MoveToLocation(Vector2 loc)
     {
+        Transition<float> xtrans = new Transition<float>(s.X,loc.X,Easing.Option.EaseInOutCirc);
+        Transition<float> ytrans = new Transition<float>(s.Y,loc.Y,Easing.Option.EaseInOutCirc);
+
+        double t = 0;
+        float timeToDest = 1f;
         while(MathF.Abs(s.X-loc.X) > 1 && MathF.Abs(s.Y-loc.Y) > 1)
         {
-            //get the direction to the target location
-            var dir = Vector2.Normalize(loc - new Vector2(s.X, s.Y));
-            //move the shape in that direction
-            s.X += dir.X;
-            s.Y += dir.Y;
+            t += Engine.DeltaTime;
+            float sample = (float)t/timeToDest;
+            float sampleX = (float)xtrans.Sample(sample);
+            float sampleY = (float)ytrans.Sample(sample);
+            s.X = Quick.MapF(sampleX, 0f, 1f, xtrans.StartValue, xtrans.TargetValue);
+            s.Y = Quick.MapF(sampleY, 0f, 1f, ytrans.StartValue, ytrans.TargetValue);
             yield return null;
+
+            // //get the direction to the target location
+            // var dir = Vector2.Normalize(loc - new Vector2(s.X, s.Y));
+            // //move the shape in that direction
+            // s.X += dir.X;
+            // s.Y += dir.Y;
+            // yield return null;
         }
         yield return null;
+    }
+
+    public override void Update(double dt)
+    {
+        
+        Core.ImGUI.ImGUIHelper.Wrappers.Window("coroutine controls",() =>
+        {
+            Core.ImGUI.ImGUIHelper.Wrappers.Button("Start Coroutine",new Vector2(120,20),() => c.Start());
+            Core.ImGUI.ImGUIHelper.Wrappers.Button("Pause Coroutine",new Vector2(120,20),() => c.Pause());
+            Core.ImGUI.ImGUIHelper.Wrappers.Button("Reset Coroutine",new Vector2(120,20),() => c.Reset());
+        });
     }
 }

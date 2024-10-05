@@ -9,7 +9,7 @@ public class ShapeDemo : Scene
     {
         new Shape(update: (self, dt) =>
         {
-            Wrappers.Window("rot",Internal.Sokol.ImGuiWindowFlags_.ImGuiWindowFlags_None,() =>
+            Wrappers.Window("rot",() =>
             {
                 float rotation = self.Rotation;
                 float scaleX = self.ScaleX;

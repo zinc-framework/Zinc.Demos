@@ -60,7 +60,7 @@ public class GridDemo : Scene
         h.CellHeight = (pingPong * 16);
 
 
-        ImGUIHelper.Wrappers.Window("gridPos",Internal.Sokol.ImGuiWindowFlags_.ImGuiWindowFlags_None,() =>
+        ImGUIHelper.Wrappers.Window("gridPos",() =>
         {
             float cw = g.CellWidth;
             float ch = g.CellHeight;

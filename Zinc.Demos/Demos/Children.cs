@@ -28,8 +28,7 @@ public class ChildrenDemo : Scene
 
     public override void Update(double dt)
     {
-        ImGUIHelper.Wrappers.SetNextWindowSize(500,500);
-        ImGUIHelper.Wrappers.Window($"rot", Internal.Sokol.ImGuiWindowFlags_.ImGuiWindowFlags_None, () =>{
+        ImGUIHelper.Wrappers.Window($"rot",() =>{
             
             ImGUIHelper.Wrappers.SliderFloat($"scaleX", ref scaleX, 1, 32, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
             ImGUIHelper.Wrappers.SliderFloat($"scaleY", ref scaleY, 1, 32, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
