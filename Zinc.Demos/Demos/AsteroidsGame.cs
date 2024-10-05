@@ -99,6 +99,7 @@ public class AsteroidsGame : Scene
     public override void Cleanup()
     {
 	    InputSystem.Events.Key.Down -= OnKeyDown;
+		Engine.Cursor.Update = null;
     }
 }
 
