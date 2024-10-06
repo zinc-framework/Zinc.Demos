@@ -40,19 +40,16 @@ public class Coroutines : Scene
 
     public IEnumerator MoveToLocation(Vector2 loc)
     {
-        Transition<float> xtrans = new Transition<float>(s.X,loc.X,Easing.Option.EaseInOutCirc);
-        Transition<float> ytrans = new Transition<float>(s.Y,loc.Y,Easing.Option.EaseInOutCirc);
+        Vector2Tween posTween = new Vector2Tween(new Vector2(s.X,s.Y),loc,Easing.EaseInOutQuad);
 
         double t = 0;
         float timeToDest = 1f;
         while(MathF.Abs(s.X-loc.X) > 1 && MathF.Abs(s.Y-loc.Y) > 1)
         {
             t += Engine.DeltaTime;
-            float sample = (float)t/timeToDest;
-            float sampleX = (float)xtrans.Sample(sample);
-            float sampleY = (float)ytrans.Sample(sample);
-            s.X = Quick.MapF(sampleX, 0f, 1f, xtrans.StartValue, xtrans.TargetValue);
-            s.Y = Quick.MapF(sampleY, 0f, 1f, ytrans.StartValue, ytrans.TargetValue);
+            var sample = posTween.Sample(t/timeToDest);
+            s.X = sample.X;
+            s.Y = sample.Y;
             yield return null;
 
             // //get the direction to the target location
