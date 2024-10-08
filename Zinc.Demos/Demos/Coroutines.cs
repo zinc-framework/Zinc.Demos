@@ -13,13 +13,7 @@ public class Coroutines : Scene
     Coroutine c;
     public override void Create()
     {
-        s = new Shape(){
-            X = Engine.Width/2f,
-            Y = Engine.Height/2f,
-            Renderer_Color = Palettes.ENDESGA[1],
-            Collider_Active = false
-        };
-        
+        s = new Shape();
         c = new Coroutine(Patrol(),"patrol");
     }
 
@@ -27,14 +21,13 @@ public class Coroutines : Scene
     {
         while(true)
         {
-            var nextPos = new Vector2(Quick.RandFloat() * 800 + 100,Quick.RandFloat() * 800 + 100);
+            var nextPos = new Vector2(Quick.RandFloat() * 500 + 100,Quick.RandFloat() * 500 + 100);
             new TemporaryShape(width:8,height:8,lifetime:2){
                 X = nextPos.X,
                 Y = nextPos.Y,
                 Renderer_Color = Palettes.ENDESGA[3]
             };
             yield return MoveToLocation(nextPos);
-            yield return new WaitForSeconds(0.2f);
         }
     }
 
@@ -43,8 +36,12 @@ public class Coroutines : Scene
         // version that uses a tween to move the shape to the target location
         yield return new Vector2Tween(new Vector2(s.X,s.Y),loc,Easing.EaseOutBounce)
         {
-            Duration = 1f,
             ValueUpdated = (v) => {s.X = v.X; s.Y = v.Y;}
+        };
+        yield return new FloatTween(s.Rotation,s.Rotation + 1.0f,Easing.EaseOutBounce)
+        {
+            Duration = 0.7f,
+            ValueUpdated = (v) => {s.Rotation = v;}
         };
 
         /*

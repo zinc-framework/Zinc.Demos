@@ -15,6 +15,6 @@ public class TextureFrame : Scene
 
     public override void Create()
     {
-        new Sprite(conscriptFrame0){X = Engine.Width/2f,Y = Engine.Height/2f};
+        new Sprite(conscriptFrame0);
     }
 }
