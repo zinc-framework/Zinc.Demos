@@ -10,8 +10,8 @@ namespace Zinc.Sandbox.Demos;
 public class Cards : Scene
 {
     public record GridPos(int x) : Tag($"GRID:{x}");
-    public Tag mouseover = new Tag("mouseover");
-    public Tag positioned = new Tag("positioned");
+    public Tag held = "held";
+    public Tag positioned = "positioned";
     Shape s;
     Grid g;
     public override void Create()
@@ -50,25 +50,20 @@ public class Cards : Scene
             Collider_Active = true,
             Collider_OnMouseDown = (self, mods) =>
             {
-                (self as Shape).X = InputSystem.MouseX;
-                (self as Shape).Y = InputSystem.MouseY;
-                self.Tag(mouseover);
+                s.X = InputSystem.MouseX;
+                s.Y = InputSystem.MouseY;
+                self.Tag(held);
                 self.Untag(positioned);
             },
             Collider_OnMouseUp = (self, mods) =>
             {
-                self.Untag(mouseover);
+                self.Untag(held);
             },
-            Collider_OnStart = (self, other) =>
-            {
-                // if(other.HasTag<GridPos>())
-                // {
-                //     // ((Shape)self).Renderer_Color = Palettes.ENDESGA[3];
-                // }
-            },
+            
             Collider_OnContinue = (self, other) =>
             {
-                if(other.HasTag<GridPos>() && !self.Tagged(mouseover) && !self.Tagged(positioned))
+                Console.WriteLine($"{self.Tagged(held,positioned)}");
+                if(other.HasTag<GridPos>() && self.NotTagged(held,positioned))
                 {
                     var aa = (other as Anchor).GetWorldPosition();
                     new Coroutine(MoveTestCardToLocation(aa));
