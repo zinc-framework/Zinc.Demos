@@ -1,6 +1,4 @@
-using Volatile;
 using Zinc.Core;
-using Zinc.Core.ImGUI;
 
 namespace Zinc.Sandbox.Demos;
 
@@ -15,11 +13,7 @@ public class GridDemo : Scene
     {
         g = new Grid(cellWidth:dim, cellHeight:dim,update: (self, dt) =>{
             self.Rotation += (float)dt;
-        })
-        {
-            X = Engine.Width / 2f,
-            Y = Engine.Height / 2f,
-        };
+        });
 
         for (int i = 0; i < dim * dim; i++)
         {
@@ -28,11 +22,7 @@ public class GridDemo : Scene
 
         h = new Grid(cellWidth:dim, cellHeight:dim,update: (self, dt) =>{
             self.Rotation -= (float)dt;
-        })
-        {
-            X = Engine.Width / 2f,
-            Y = Engine.Height / 2f,
-        };
+        });
 
         for (int i = 0; i < dim * dim; i++)
         {
@@ -60,12 +50,12 @@ public class GridDemo : Scene
         h.CellHeight = (pingPong * 16);
 
 
-        ImGUIHelper.Wrappers.Window("gridPos",() =>
+        ImGUI.Window("gridPos",() =>
         {
             float cw = g.CellWidth;
             float ch = g.CellHeight;
-            ImGUIHelper.Wrappers.SliderFloat("cell_width", ref cw, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
-            ImGUIHelper.Wrappers.SliderFloat("cell_height", ref ch, 1, 128,"",Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            ImGUI.SliderFloat("cell_width", ref cw, 1, 128,"");
+            ImGUI.SliderFloat("cell_height", ref ch, 1, 128,"");
             g.CellWidth = cw;
             g.CellHeight = ch;
         });

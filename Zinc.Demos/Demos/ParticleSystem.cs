@@ -1,6 +1,5 @@
 using System.Numerics;
 using Zinc.Core;
-using Zinc.Core.ImGUI;
 using static Zinc.Quick;
 
 namespace Zinc.Sandbox.Demos;

@@ -80,11 +80,11 @@ public class Coroutines : Scene
     public override void Update(double dt)
     {
         
-        Core.ImGUI.ImGUIHelper.Wrappers.Window("coroutine controls",() =>
+        ImGUI.Window("coroutine controls",() =>
         {
-            Core.ImGUI.ImGUIHelper.Wrappers.Button("Start Coroutine",new Vector2(120,20),() => c.Start());
-            Core.ImGUI.ImGUIHelper.Wrappers.Button("Pause Coroutine",new Vector2(120,20),() => c.Pause());
-            Core.ImGUI.ImGUIHelper.Wrappers.Button("Reset Coroutine",new Vector2(120,20),() => c.Reset());
+            ImGUI.Button("Start Coroutine",new Vector2(120,20),() => c.Start());
+            ImGUI.Button("Pause Coroutine",new Vector2(120,20),() => c.Pause());
+            ImGUI.Button("Reset Coroutine",new Vector2(120,20),() => c.Reset());
         });
     }
 }

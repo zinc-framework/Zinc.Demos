@@ -10,8 +10,8 @@ namespace Zinc.Sandbox.Demos;
 public class Cards : Scene
 {
     public record GridPos(int x) : Tag($"GRID:{x}");
-    public Tag held = "held";
-    public Tag positioned = "positioned";
+    Tag held = "held";
+    Tag positioned = "positioned";
     Shape s;
     Grid g;
     public override void Create()
@@ -62,7 +62,6 @@ public class Cards : Scene
             
             Collider_OnContinue = (self, other) =>
             {
-                Console.WriteLine($"{self.Tagged(held,positioned)}");
                 if(other.HasTag<GridPos>() && self.NotTagged(held,positioned))
                 {
                     var aa = (other as Anchor).GetWorldPosition();

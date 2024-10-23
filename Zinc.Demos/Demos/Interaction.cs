@@ -26,7 +26,6 @@ public class Interaction : Scene
 	        self.X += DX;
 	        self.Y += DY;
         });
-        Console.WriteLine("subbing");
         InputSystem.Events.Key.Down += KeyDownListener;
     }
 

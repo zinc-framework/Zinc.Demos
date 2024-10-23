@@ -1,5 +1,4 @@
-using Volatile;
-using Zinc.Core.ImGUI;
+using Zinc.Core;
 
 namespace Zinc.Sandbox.Demos;
 
@@ -13,11 +12,7 @@ public class ChildrenDemo : Scene
     {
         for (int i = 0; i < shapes.Capacity; i++)
         {
-            shapes.Add(new Shape(width:32,height:32,parent: i > 0 ? shapes[i-1] : null, update:(self, dt) =>
-            {
-                // self.Rotation += Quick.RandFloat() * (float)dt;
-                // self.Renderer_Rotation += Quick.RandFloat() * (float)dt;
-            })
+            shapes.Add(new Shape(width:32,height:32,parent: i > 0 ? shapes[i-1] : null)
             {
                 Name = $"Shape{i}",
                 X = i == 0 ? Engine.Width / 2f : 48,
@@ -28,10 +23,10 @@ public class ChildrenDemo : Scene
 
     public override void Update(double dt)
     {
-        ImGUIHelper.Wrappers.Window($"rot",() =>{
+        ImGUI.Window($"rot",() =>{
             
-            ImGUIHelper.Wrappers.SliderFloat($"scaleX", ref scaleX, 1, 32, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
-            ImGUIHelper.Wrappers.SliderFloat($"scaleY", ref scaleY, 1, 32, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+            ImGUI.SliderFloat($"scaleX", ref scaleX, 1, 32, "");
+            ImGUI.SliderFloat($"scaleY", ref scaleY, 1, 32, "");
             shapes[0].ScaleX = scaleX;
             shapes[0].ScaleY = scaleY;
             // shapes[0].ScaleY = dim;
@@ -39,7 +34,7 @@ public class ChildrenDemo : Scene
             foreach (var shape in shapes)
             {
                 float r = shape.Rotation;
-                ImGUIHelper.Wrappers.SliderFloat($"{shape.Name} rot", ref r, 0, 6.28f, "", Internal.Sokol.ImGuiSliderFlags_.ImGuiSliderFlags_None);
+                ImGUI.SliderFloat($"{shape.Name} rot", ref r, 0, 6.28f, "");
                 shape.Rotation = r;
 
                 // float xoff = 0;
@@ -48,26 +43,4 @@ public class ChildrenDemo : Scene
             }
         });
     }
-}
-
-
-public record Prefab(IComponent[] Components)
-{
-    public void Spawn()
-    {
-        // new Entity(Components);
-    }
-};
-
-public partial record SpritePrefab() : Prefab([
-    new Position(),
-    new SpriteRenderer()
-]);
-
-public static class Prefabs
-{
-    public static Prefab ShapePrefab = new Prefab([
-
-        new Position()
-    ]);
 }

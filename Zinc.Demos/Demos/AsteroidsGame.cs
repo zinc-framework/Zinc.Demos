@@ -6,12 +6,9 @@ namespace Zinc.Sandbox.Demos;
 [DemoScene("15 Asteroids")]
 public class AsteroidsGame : Scene
 {
-    public class Bullet(SpriteData spriteData, Scene? scene = null, bool startEnabled = true, Action<Sprite, double>? update = null) 
-		: Sprite(spriteData, scene, startEnabled, update);
-    public class Asteroid(SpriteData spriteData, Scene? scene = null, bool startEnabled = true, Action<Sprite, double>? update = null) 
-		: Sprite(spriteData, scene, startEnabled, update);
-    public class Player(SpriteData spriteData, Scene? scene = null, bool startEnabled = true, Action<Sprite, double>? update = null) 
-		: Sprite(spriteData, scene, startEnabled, update);
+	Tag Tasteroid = "asteroid";
+	Tag Tbullet = "bullet";
+	Tag Tplayer = "player";
     private Resources.Texture conscriptImage;
     private SpriteData fullConscript;
     private Sprite player;
@@ -23,78 +20,71 @@ public class AsteroidsGame : Scene
 
     public override void Create()
     {
-        player = new Player(fullConscript){Name = "player"};
+        player = new Sprite(fullConscript){Name = "player",Tags = {Tplayer}};
         InputSystem.Events.Key.Down += OnKeyDown;
 
-		Engine.Cursor.Update = (cursor,dt) => {
-			player.X = ((Pointer)cursor).X;
-			player.Y = ((Pointer)cursor).Y;
-		};
-    }
-
-    double bulletCooldown = 0;
-    private List<Bullet> bullets = new ();
-    private List<Asteroid> asteroids = new ();
-    private int bulletCount = 0;
-    private void OnKeyDown(Key key, List<Modifiers> arg2)
-    {
-	    if (key == Key.SPACE)
-	    {
-		    //spawn bullets
-			bullets.Add(new Bullet(fullConscript, update: (self,dt) => {
-					((Bullet)self).X += 1.5f;
-					if (self.X > Engine.Width)
-					{
-						bullets.Remove((Bullet)self);
-						self.Destroy();
-					}
-				}){
-					Name = "bullet" + bulletCount,
-					X = player.X, 
-					Y = player.Y,
-					Collider_Active = true,
-					Collider_OnStart = (self,other) =>  {
-						if (other is Asteroid asteroid)
-						{
-							asteroids.Remove(asteroid);
-							asteroid.Destroy();
-							bullets.Remove((Bullet)self);
-							self.Destroy();
-						}
-					}
-		    });
-		    bulletCooldown = 0f;
-		    bulletCount++;
-	    }
-    }
-
-    private double timer = 0;
-    public override void Update(double dt)
-    {
-	    //spawn asteroids
-	    timer += Engine.DeltaTime;
-	    bulletCooldown += Engine.DeltaTime;
-	    if (timer > 5)
-	    {
-			asteroids.Add(new Asteroid(fullConscript,
+		Quick.Loop(5, () => {
+			//spawn asteroids
+			asteroids.Add(new Sprite(fullConscript,
 			    update: (self,dt) =>
 			    {
 					if (self.X < -10)
 					{
-						asteroids.Remove((Asteroid)self);
+						asteroids.Remove(self);
 						self.Destroy();
 					}
 				    self.X -= 1.5f;
 			    }) 
 			{
 			    Name = "Asteroid",
+				Tags = {Tasteroid},
 	    		X = Engine.Width, 
 	    		Y = (int)((Engine.Height / 2f) + MathF.Sin(Quick.RandFloat() * 2 - 1) * Engine.Height / 2.5f),
 			    Collider_Active = true
 	    	});
-	    	timer = 0;
+		});
+
+    }
+
+    private List<Entity> bullets = new ();
+    private List<Entity> asteroids = new ();
+    private int bulletCount = 0;
+    private void OnKeyDown(Key key, List<Modifiers> arg2)
+    {
+	    if (key == Key.SPACE)
+	    {
+		    //spawn bullets
+			bullets.Add(new Sprite(fullConscript, update: (self,dt) => {
+					self.X += 1.5f;
+					if (self.X > Engine.Width)
+					{
+						bullets.Remove(self);
+						self.Destroy();
+					}
+				}){
+					Name = "bullet" + bulletCount,
+					X = player.X, 
+					Y = player.Y,
+					Tags = {Tbullet},
+					Collider_Active = true,
+					Collider_OnStart = (self,other) =>  {
+						if (other.HasTag(Tasteroid))
+						{
+							asteroids.Remove(other);
+							other.Destroy();
+							bullets.Remove(self);
+							self.Destroy();
+						}
+					}
+		    });
+		    bulletCount++;
 	    }
     }
+
+	public override void Update(double dt)
+	{
+		Quick.MoveToMouse(player);
+	}
 
     public override void Cleanup()
     {

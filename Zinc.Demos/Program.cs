@@ -1,7 +1,5 @@
-using System.Runtime.InteropServices;
 using Zinc;
-using Zinc.Core.ImGUI;
-using Zinc.Sandbox;
+using Zinc.Core;
 using Zinc.Sandbox.Demos;
 using Collision = Zinc.Sandbox.Demos.Collision;
 
@@ -31,18 +29,18 @@ Engine.Run(new Engine.RunOptions(1920,1080,"zinc",
 
 void drawDemoOptions()
 {
-	ImGUIHelper.Wrappers.MainMenu(() =>
+	ImGUI.MainMenu(() =>
 	{
-		ImGUIHelper.Wrappers.Menu("Zinc", () =>
+		ImGUI.Menu("Zinc", () =>
 		{
-			ImGUIHelper.Wrappers.Menu("Demos", () =>
+			ImGUI.Menu("Demos", () =>
 			{
 				Scene? scene = null;
-				ImGUIHelper.Wrappers.Menu("Examples", () =>
+				ImGUI.Menu("Examples", () =>
 				{
 					foreach (var type in demoTypes)
 					{
-						if (ImGUIHelper.Wrappers.MenuItem(type.Name))
+						if (ImGUI.MenuItem(type.Name))
 						{
 							scene = Util.CreateInstance(type.Type) as Scene;
 							scene.Name = type.Name;
