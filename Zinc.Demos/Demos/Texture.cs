@@ -7,10 +7,15 @@ public class Texture : Scene
 {
     public override void Create()
     {
-        var tex = Res.Assets.conscript.ToSprite();
-        tex.Update = (self, dt) =>
+        //use res folder
+        var sprite = Res.Assets.conscript.ToSprite();
+        sprite.Update = (self, dt) =>
         {
             ((Sprite)self).Rotation += (float)dt;
         };
+
+        //could also load by path:
+        // var tex = new Resources.Texture("res/conscript.png");
+        // var sprite = new Sprite(new SpriteData(tex,tex.GetFullRect()));
     }
 }
