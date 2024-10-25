@@ -31,32 +31,25 @@ void drawDemoOptions()
 {
 	ImGUI.MainMenu(() =>
 	{
-		ImGUI.Menu("Zinc", () =>
+		ImGUI.Menu("Demos", () =>
 		{
-			ImGUI.Menu("Demos", () =>
+			Scene? scene = null;
+			foreach (var type in demoTypes)
 			{
-				Scene? scene = null;
-				ImGUI.Menu("Examples", () =>
+				if (ImGUI.MenuItem(type.Name))
 				{
-					foreach (var type in demoTypes)
-					{
-						if (ImGUI.MenuItem(type.Name))
-						{
-							scene = Util.CreateInstance(type.Type) as Scene;
-							scene.Name = type.Name;
-						}
-					}
-				});
-
-				if (scene != null)
-				{
-					Engine.TargetScene.Unmount(() =>
-					{
-						scene.Mount(0);
-						scene.Load(() => scene.Start());
-					});
+					scene = Util.CreateInstance(type.Type) as Scene;
+					scene.Name = type.Name;
 				}
-			});
+			}
+			if (scene != null)
+			{
+				Engine.TargetScene.Unmount(() =>
+				{
+					scene.Mount(0);
+					scene.Load(() => scene.Start());
+				});
+			}
 		});
 	});
 }
