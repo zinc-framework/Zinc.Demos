@@ -6,9 +6,11 @@ namespace Zinc.Sandbox.Demos;
 [DemoScene("15 Asteroids")]
 public class AsteroidsGame : Scene
 {
+	Tag Tasteroid = "asteroid";
+	Tag Tbullet = "bullet";
+	Tag Tplayer = "player";
     private Resources.Texture conscriptImage;
     private SpriteData fullConscript;
-
     private Sprite player;
     public override void Preload()
     {
@@ -18,111 +20,77 @@ public class AsteroidsGame : Scene
 
     public override void Create()
     {
-        player = new Sprite(fullConscript){Name = "player",X = Engine.Width/2f,Y = Engine.Height/2f,PivotX = 32,PivotY = 32};
-        player.ECSEntity.Add(new Player());
+        player = new Sprite(fullConscript){Name = "player",Tags = {Tplayer}};
         InputSystem.Events.Key.Down += OnKeyDown;
+
+		Quick.Loop(5, () => {
+			//spawn asteroids
+			asteroids.Add(new Sprite(fullConscript,
+			    update: (self,dt) =>
+			    {
+					if (self.X < -10)
+					{
+						asteroids.Remove(self);
+						self.Destroy();
+					}
+				    self.X -= 1.5f;
+			    }) 
+			{
+			    Name = "Asteroid",
+				Tags = {Tasteroid},
+	    		X = Engine.Width, 
+	    		Y = (int)((Engine.Height / 2f) + MathF.Sin(Quick.RandFloat() * 2 - 1) * Engine.Height / 2.5f),
+			    Collider_Active = true
+	    	});
+		});
+
     }
 
-    double bulletCooldown = 0;
-    private List<Sprite> bullets = new ();
-    private List<Sprite> asteroids = new ();
+    private List<Entity> bullets = new ();
+    private List<Entity> asteroids = new ();
     private int bulletCount = 0;
     private void OnKeyDown(Key key, List<Modifiers> arg2)
     {
-	    // (float dx, float dy) v = key switch {
-		   //  Key.LEFT => (-0.2f, 0),
-		   //  Key.RIGHT => (0.2f, 0),
-		   //  Key.UP => (0, -0.2f),
-		   //  Key.DOWN => (0, 0.2f),
-		   //  _ => (0, 0)
-	    // };
-	    // player.SetVelocity(player.DX + v.dx, player.DY + v.dy);
-
 	    if (key == Key.SPACE)
 	    {
 		    //spawn bullets
-		    var bullet = new Sprite(fullConscript,
-			    collisionStart: (self,other) =>
-			    {
-				    if (other.Entity.Has<Asteroid>())
-				    {
-					    asteroids.RemoveAt(asteroids.FindIndex(ast => ast.ECSEntity.Id == other.Entity.Id));
-					    other.Destroy();
-					    bullets.RemoveAt(bullets.FindIndex(bullet => bullet.ECSEntity.Id == self.Entity.Id));
-					    self.Destroy();
-				    }
-			    },
-			    update: (self,dt) =>
-			    {
-				    self.X += 1.5f;
-			    })
-		    {
-			    Name = "bullet" + bulletCount,
-			    X = player.X, 
-			    Y = player.Y,
-			    ColliderActive = true,
-		    };
-		    bullet.ECSEntity.Add(new Bullet());
-		    bullets.Add(bullet);
-		    bulletCooldown = 0f;
+			bullets.Add(new Sprite(fullConscript, update: (self,dt) => {
+					self.X += 1.5f;
+					if (self.X > Engine.Width)
+					{
+						bullets.Remove(self);
+						self.Destroy();
+					}
+				}){
+					Name = "bullet" + bulletCount,
+					X = player.X, 
+					Y = player.Y,
+					Tags = {Tbullet},
+					Collider_Active = true,
+					Collider_OnStart = (self,other) =>  {
+						if (other.Tagged(Tasteroid))
+						{
+							asteroids.Remove(other);
+							other.Destroy();
+							bullets.Remove(self);
+							self.Destroy();
+						}
+					}
+		    });
 		    bulletCount++;
 	    }
     }
 
-    private double timer = 0;
-    public override void Update(double dt)
-    {
-	    Quick.MoveToMouse(player);
-	    //spawn asteroids
-	    timer += Engine.DeltaTime;
-	    bulletCooldown += Engine.DeltaTime;
-	    if (timer > 5)
-	    {
-	    	var a = new Sprite(fullConscript,
-			    update: (self,dt) =>
-			    {
-				    Console.WriteLine("asteroid update");
-				    self.X -= 1.5f;
-			    }) {
-			    Name = "Asteroid",
-	    		X = Engine.Width, 
-	    		Y = (int)((Engine.Height / 2f) + MathF.Sin(Quick.RandFloat() * 2 - 1) * Engine.Height / 2.5f),
-			    ColliderActive = true
-	    	};
-		    a.ECSEntity.Add(new Asteroid());
-		    asteroids.Add(a);
-	    	timer = 0;
-	    }
-
-	    bullets.RemoveAll(b =>
-	    {
-		    if (b.X > Engine.Width)
-		    {
-			    Console.WriteLine("well destory " + b.Name);
-			    b.Destroy();
-			    return true;
-		    }
-		    return false;
-	    });
-	    
-	    asteroids.RemoveAll(a =>
-	    {
-		    if (a.X < -10)
-		    {
-			    a.Destroy();
-			    return true;
-		    }
-		    return false;
-	    });
-    }
+	public override void Update(double dt)
+	{
+		Quick.MoveToMouse(player);
+	}
 
     public override void Cleanup()
     {
 	    InputSystem.Events.Key.Down -= OnKeyDown;
+		Engine.Cursor.Update = null;
     }
-    public readonly record struct Bullet();
-    public readonly record struct Asteroid();
-    public readonly record struct Player();
 }
 
 /*

@@ -1,7 +1,5 @@
-using System.Runtime.InteropServices;
 using Zinc;
-using Zinc.Core.ImGUI;
-using Zinc.Sandbox;
+using Zinc.Core;
 using Zinc.Sandbox.Demos;
 using Collision = Zinc.Sandbox.Demos.Collision;
 
@@ -17,8 +15,10 @@ Engine.Run(new Engine.RunOptions(1920,1080,"zinc",
 	() =>
 	{
 		demoTypes = Util.GetDemoSceneTypes().ToList();
-		var scene = new ShapeDemo();
+		var scene = new GridDemo();
+		Console.WriteLine("mounting scene now");
 		scene.Mount(0);
+		Console.WriteLine("scene mounted");
 		scene.Load(() => scene.Start());
 	}, 
 	() =>
@@ -29,34 +29,27 @@ Engine.Run(new Engine.RunOptions(1920,1080,"zinc",
 
 void drawDemoOptions()
 {
-	ImGUIHelper.Wrappers.MainMenu(() =>
+	ImGUI.MainMenu(() =>
 	{
-		ImGUIHelper.Wrappers.Menu("Zinc", () =>
+		ImGUI.Menu("Demos", () =>
 		{
-			ImGUIHelper.Wrappers.Menu("Demos", () =>
+			Scene? scene = null;
+			foreach (var type in demoTypes)
 			{
-				Scene? scene = null;
-				ImGUIHelper.Wrappers.Menu("Examples", () =>
+				if (ImGUI.MenuItem(type.Name))
 				{
-					foreach (var type in demoTypes)
-					{
-						if (ImGUIHelper.Wrappers.MenuItem(type.Name))
-						{
-							scene = Util.CreateInstance(type.Type) as Scene;
-							scene.Name = type.Name;
-						}
-					}
-				});
-
-				if (scene != null)
-				{
-					Engine.TargetScene.Unmount(() =>
-					{
-						scene.Mount(0);
-						scene.Load(() => scene.Start());
-					});
+					scene = Util.CreateInstance(type.Type) as Scene;
+					scene.Name = type.Name;
 				}
-			});
+			}
+			if (scene != null)
+			{
+				Engine.TargetScene.Unmount(() =>
+				{
+					scene.Mount(0);
+					scene.Load(() => scene.Start());
+				});
+			}
 		});
 	});
 }

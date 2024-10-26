@@ -1,3 +1,4 @@
+using System.Numerics;
 using Zinc.Core;
 using static Zinc.Quick;
 
@@ -6,30 +7,27 @@ namespace Zinc.Sandbox.Demos;
 [DemoScene("14 Particle System")]
 public class ParticleSystem : Scene
 {
-    // Color startColor = Palettes.ENDESGA[4];
-    private Color startColor = new Color(1.0f, 1.0f, 0f, 0f);
-    private Color endColor = new Color(1.0f, 0.0f, 1.0f, 0f);
-    // Color endColor = Palettes.ENDESGA[16];
+    Color startColor = Palettes.ENDESGA[4];
+    Color endColor = Palettes.ENDESGA[16];
     ParticleEmitter emitter;
+    ParticleEmitterConfig config = ParticleEmitterConfig.DefaultConfig;
     public override void Create()
     {
-        emitter = new ParticleEmitter(
-            new(100000, 100, new ParticleEmitterComponent.ParticleConfig()
-            {
-                Color = new Transition<Color>(startColor,endColor,Easing.Option.EaseInOutExpo)
-            }))
-        {
-            X = 200,
-            Y = 200
+        config.Color.StartValue = startColor;
+        config.Color.TargetValue = endColor;
+        emitter = new ParticleEmitter(10000,config){
+            X = 400,
+            Y = 400,
         };
     }
 
     public override void Update(double time)
     {
         MoveToMouse(emitter);
-        DrawEditGUIForObject("emitter",ref emitter);
-        // var rand = RandUnitCircle();
-        // emitter.Config.particleConfig.DX.StartValue = rand.x * 4;
-        // emitter.Config.particleConfig.DY.StartValue = rand.y * 4;
+        emitter.Emitter_Config.Gravity = StandardGravity * 10f;
+        emitter.Emitter_Config.InitialMassFunc = () => 3f;
+        emitter.Emitter_Config.InitialSpeedFunc = () => (RandFloat() + 0.5f) * 500f;
+        emitter.Emitter_Config.InitialEmissionDirectionFunc = () => RandUnitCirclePos();
+        DrawEditGUIForObject("emitter",ref config);
     }
 }

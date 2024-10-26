@@ -5,6 +5,7 @@ namespace Zinc.Sandbox.Demos;
 [DemoScene("07 Physics")]
 public class Physics : Scene
 {
+    //TODO: make physics and actual system to get rid of the jank setters
     private Resources.Texture conscriptImage;
     private SpriteData conscript;
     public override void Preload()
@@ -42,16 +43,15 @@ public class Physics : Scene
             var a = new Sprite(conscript) {
                 X = (int)startPos.x,
                 Y = (int)startPos.y,
-                ColliderActive = false
+                Collider_Active = false
             };
             var poly = Engine.PhysicsWorld.CreatePolygonWorldSpace(
-                new Vector2[]
-                {
+                [
                     new Vector2(startPos.x, startPos.y),
                     new Vector2(startPos.x, startPos.y + 64),
                     new Vector2(startPos.x + 64, startPos.y + 64),
                     new Vector2(startPos.x + 64, startPos.y)
-                },1f);
+                ],1f);
             var bod = Engine.PhysicsWorld.CreateDynamicBody(startPos, 0f, new []{poly});
             bods.Add(a,bod);
             // bod.AddForce(new Vector2(0,9.8f));
@@ -62,7 +62,8 @@ public class Physics : Scene
         foreach (var b in bods)
         {
             b.Value.AddForce(new Vector2(0,9.8f));
-            b.Key.SetPosition((int)b.Value.Position.x,(int)b.Value.Position.y,b.Value.Angle,b.Key.ScaleX,b.Key.ScaleY,b.Key.PivotX,b.Key.PivotY);
+            b.Key.X = (int)b.Value.Position.x;
+            b.Key.Y = (int)b.Value.Position.y;
         }
     }
 }

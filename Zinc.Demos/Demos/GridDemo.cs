@@ -7,41 +7,58 @@ public class GridDemo : Scene
 {
     Color shape1c = Palettes.ENDESGA[9];
     Color shape2c = Palettes.ENDESGA[8];
-    List<Shape> shapes1 = new();
-    List<Shape> shapes2 = new();
-    Grid g = new Grid(new (new(Engine.Width / 2f, Engine.Height / 2f), new(0.5f, 0.5f), 10, 10, new(0.5f, 0.5f), 30, 30));
+    Grid g,h;
+    int dim = 8;
     public override void Create()
     {
-        foreach (var p in g.Points)
+        g = new Grid(cellWidth:dim, cellHeight:dim,update: (self, dt) =>{
+            self.Rotation += (float)dt;
+        });
+
+        for (int i = 0; i < dim * dim; i++)
         {
-            shapes1.Add(new Shape(){
-                Color = shape1c, 
-                Width = 5, 
-                Height = 5,
-                X = (int)p.X, 
-                Y = (int)p.Y, 
-                Collider_Active = false,
-                PivotX = 2.5f,
-                PivotY = 2.5f}
-            );
-            shapes2.Add(new Shape(){
-                Color = shape2c, 
-                Width = 5, 
-                Height = 5,
-                X = (int)p.X, 
-                Y = (int)p.Y, 
-                Collider_Active = false,
-                PivotX = 2.5f,
-                PivotY = 2.5f}
-            );
+            g.AddChild(new Shape(16,16,shape1c){Name = $"shape{i}"});
+        }
+
+        h = new Grid(cellWidth:dim, cellHeight:dim,update: (self, dt) =>{
+            self.Rotation -= (float)dt;
+        });
+
+        for (int i = 0; i < dim * dim; i++)
+        {
+            h.AddChild(new Shape(16,16,shape2c){Name = $"shape{i}"});
         }
     }
 
     public override void Update(double dt)
     {
-        g.TransformGrid((float)Engine.Time,1f,1f);
-        g.ApplyPositionsToEntites(shapes1);
-        g.TransformGrid(-(float)Engine.Time,MathF.Sin((float)Engine.Time) + 2,MathF.Sin((float)Engine.Time) + 2);
-        g.ApplyPositionsToEntites(shapes2);
+        //ping pong math function:
+        // float pingPong = MathF.Abs(MathF.Sin((float)Engine.Time));
+        float pingPong = MathF.Sin((float)Engine.Time) + 2f;
+        // g.CellHeight = (int)(pingPong * 16);
+        // g.CellWidth = (int)(pingPong * 16);
+        // h.CellHeight = (int)(pingPong * 16);
+        // h.CellWidth = (int)(pingPong * 16);
+
+        g.ScaleX = pingPong;
+        g.ScaleY = pingPong;
+        h.ScaleX = pingPong;
+        h.ScaleY = pingPong;
+        g.CellWidth = (pingPong * 16);
+        g.CellHeight = (pingPong * 16);
+        h.CellWidth = (pingPong * 16);
+        h.CellHeight = (pingPong * 16);
+
+
+        ImGUI.Window("gridPos",() =>
+        {
+            float cw = g.CellWidth;
+            float ch = g.CellHeight;
+            ImGUI.SliderFloat("cell_width", ref cw, 1, 128,"");
+            ImGUI.SliderFloat("cell_height", ref ch, 1, 128,"");
+            g.CellWidth = cw;
+            g.CellHeight = ch;
+        });
+
     }
 }

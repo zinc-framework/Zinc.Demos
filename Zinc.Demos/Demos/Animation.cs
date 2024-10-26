@@ -1,23 +1,43 @@
+using System.Collections;
+
 namespace Zinc.Sandbox.Demos;
-using static Zinc.Quick;
 
 [DemoScene("03 Animation")]
 public class Animation : Scene
 {
-    private Resources.Texture conscriptImage;
-    private AnimatedSpriteData animatedConscript;
+    private AnimatedSpriteData animationData;
+    AnimatedSprite animatedSprite;
     public override void Preload()
     {
-        conscriptImage = new Resources.Texture("res/conscript.png");
         var rects = Quick.CreateTextureSlices(512, 512, 64, 64);
-        animatedConscript = new AnimatedSpriteData(
-            conscriptImage,
-            new() { new("test", rects[..3],
-                0.4f) });
+        animationData = new AnimatedSpriteData(
+            Res.Assets.conscript,
+            [
+                new("north", rects[..3],0.4f),
+                new("south", rects[4..7],0.4f),
+                new("east", rects[8..11],0.4f),
+                new("west", rects[12..15],0.4f),
+            ]);
     }
 
     public override void Create()
     {
-        new AnimatedSprite(animatedConscript){X = Engine.Width/2f,Y = Engine.Height/2f};
+        animatedSprite = new AnimatedSprite(animationData);
+        new Coroutine(changeAnimationDirection(),"animator");
+    }
+
+    IEnumerator changeAnimationDirection()
+    {
+        while (true)
+        {
+            animatedSprite.SetAnimation("north");
+            yield return new WaitForSeconds(0.8f);
+            animatedSprite.SetAnimation("east");
+            yield return new WaitForSeconds(0.8f);
+            animatedSprite.SetAnimation("south");
+            yield return new WaitForSeconds(0.8f);
+            animatedSprite.SetAnimation("west");
+            yield return new WaitForSeconds(0.8f);
+        }
     }
 }

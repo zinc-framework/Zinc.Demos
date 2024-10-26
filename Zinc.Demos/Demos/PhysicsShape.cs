@@ -35,7 +35,7 @@ public class PhysicsShape : Scene
         {
             var startPos = new Vector2(InputSystem.MouseX, InputSystem.MouseY);
             var a = new Shape() {
-                Color = new Color(Palettes.ENDESGA[Quick.Random.Next(Palettes.ENDESGA.Count)]),
+                Renderer_Color = new Color(Palettes.ENDESGA[Quick.Random.Next(Palettes.ENDESGA.Count)]),
                 X = (int)startPos.x,
                 Y = (int)startPos.y,
                 Collider_Active = false
@@ -56,7 +56,8 @@ public class PhysicsShape : Scene
         foreach (var b in bods)
         {
             b.Value.AddForce(new Vector2(0,9.8f));
-            b.Key.SetPosition((int)b.Value.Position.x,(int)b.Value.Position.y,b.Value.Angle,b.Key.ScaleX,b.Key.ScaleY,b.Key.PivotX,b.Key.PivotY);
+            b.Key.X = (int)b.Value.Position.x;
+            b.Key.Y = (int)b.Value.Position.y;
         }
     }
 }
