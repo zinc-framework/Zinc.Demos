@@ -68,7 +68,7 @@ public class AsteroidsGame : Scene
 					Tags = {Tbullet},
 					Collider_Active = true,
 					Collider_OnStart = (self,other) =>  {
-						if (other.HasTag(Tasteroid))
+						if (other.Tagged(Tasteroid))
 						{
 							asteroids.Remove(other);
 							other.Destroy();

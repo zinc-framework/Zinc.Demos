@@ -10,6 +10,7 @@ namespace Zinc.Sandbox.Demos;
 public class Cards : Scene
 {
     public record GridPos(int x) : Tag($"GRID:{x}");
+    bool currentlyMovingCard = false;
     Tag card = "card";
     Tag deck = "deck";
     Tag held = "held";
@@ -30,14 +31,14 @@ public class Cards : Scene
                 RenderOrder = 100000,
                 Collider_OnStart = (self, other) =>
                 {
-                    if(other.HasTag(card))
+                    if(other.Tagged(card))
                     {
                         ((Shape)self).Renderer_Color = Palettes.ENDESGA[3];
                     }
                 },
                 Collider_OnEnd = (self, other) =>
                 {
-                    if(other.HasTag(card))
+                    if(other.Tagged(card))
                     {
                         ((Shape)self).Renderer_Color = Palettes.ENDESGA[9];
                     }
@@ -45,37 +46,29 @@ public class Cards : Scene
             });
         }
 
-
         //create a "deck"
-        new Shape(64,128,Palettes.ENDESGA[12]){
+        new Shape(64,128,Palettes.ONE_BIT_MONITOR_GLOW[1]){
             Name = "deck",
             X = 100,
             Y = 100,
             RenderOrder = -1,
             Collider_Active = true,
             Tags = [deck],
+            //clicking the deck draws a card
             Collider_OnMousePressed = (self, mods) =>
             {
                 //"draw" a card
                 // placementRowAnchors.GetGridPosition(0);
                 var c = CreateCard(100,100);
                 c.Tag(moving);
-                // new Coroutine(MoveCardToLocation(c,new Vector2(185,100)));
-                float x,y;
-                placementRowAnchors.GetLocalGridPosition(gridPos,out x,out y);
-                new Coroutine(MoveCardToLocation(c,new Vector2(placementRowAnchors.X + x, placementRowAnchors.Y + y)));
-                gridPos = (gridPos + 1) % 8;
+                new Coroutine(MoveCardToLocation(c,new Vector2(100 + 80, 100)));
             },
         };
-
-        InputSystem.Events.Key.Down += KeyDownListener;
     }
-
-    int gridPos = 0;
 
     Shape CreateCard(float x, float y)
     {
-        return new Shape(64,128,Palettes.ENDESGA[8]){
+        return new Shape(64,128){
             Name = "test card",
             X = x,
             Y = y,
@@ -84,6 +77,7 @@ public class Cards : Scene
             Tags = [card],
             Collider_OnMouseDown = (self, mods) =>
             {
+                // if(self.NotTagged(moving) && !currentlyMovingCard)
                 if(self.NotTagged(moving))
                 {
                     var a = self as Anchor;
@@ -96,32 +90,17 @@ public class Cards : Scene
             Collider_OnMouseUp = (self, mods) =>
             {
                 self.Untag(held);
-            },
-            
-            Collider_OnContinue = (self, other) =>
-            {
-                if(other.HasTag<GridPos>() && self.NotTagged(held,positioned,moving))
+                //need to sourcegen this to forward to colliders
+                if((self as Shape).ECSEntity.Get<Collider>().CollidingWithTagged<GridPos>(out var collisions))
                 {
-                    var aa = (other as Anchor).GetWorldPosition();
+                    var target = collisions.First();
+                    var aa = (target as Anchor).GetWorldPosition();
                     self.Tag(moving);
-                    new Coroutine(MoveCardToLocation(self as Anchor,aa));
                     self.Tag(positioned);
+                    new Coroutine(MoveCardToLocation(self as Anchor,aa));
                 }
             }
         };
-    }
-
-    void KeyDownListener(Key key, List<Modifiers> mods)
-    {
-        if(key == Key.SPACE)
-        {
-            CreateCard(InputSystem.MouseX,InputSystem.MouseY);
-        }
-    }
-
-    public override void Cleanup()
-    {
-        InputSystem.Events.Key.Down -= KeyDownListener;
     }
 
     IEnumerator MoveCardToLocation(Anchor cardEntity, Vector2 loc)
