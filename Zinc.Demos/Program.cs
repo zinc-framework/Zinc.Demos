@@ -1,7 +1,7 @@
 using Zinc;
 using Zinc.Core;
 using Zinc.Sandbox.Demos;
-using Collision = Zinc.Sandbox.Demos.Collision;
+using System.Numerics;
 
 InputSystem.Events.Key.Down += (key,_) =>  {
 	if (key == Key.C)
@@ -15,7 +15,7 @@ Engine.Run(new Engine.RunOptions(1920,1080,"zinc",
 	() =>
 	{
 		demoTypes = Util.GetDemoSceneTypes().ToList();
-		var scene = new GridDemo();
+		var scene = new ChildrenDemo();
 		Console.WriteLine("mounting scene now");
 		scene.Mount(0);
 		Console.WriteLine("scene mounted");
@@ -50,6 +50,14 @@ void drawDemoOptions()
 					scene.Load(() => scene.Start());
 				});
 			}
+		});
+		ImGUI.Button("Reload Scene",new Vector2(100,20),() => {
+			var targetSceneType = Engine.TargetScene.GetType();
+			Engine.TargetScene.Unmount(() => {
+				var reloadedScene = Util.CreateInstance(targetSceneType) as Scene;
+				reloadedScene.Mount(0);
+				reloadedScene.Load(() => reloadedScene.Start());
+			});
 		});
 	});
 }

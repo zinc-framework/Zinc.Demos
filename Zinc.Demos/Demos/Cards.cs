@@ -94,10 +94,10 @@ public class Cards : Scene
                 if((self as Shape).ECSEntity.Get<Collider>().CollidingWithTagged<GridPos>(out var collisions))
                 {
                     var target = collisions.First();
-                    var aa = (target as Anchor).GetWorldPosition();
+                    var aa = (target as Anchor);
                     self.Tag(moving);
                     self.Tag(positioned);
-                    new Coroutine(MoveCardToLocation(self as Anchor,aa));
+                    new Coroutine(MoveCardToLocation(self as Anchor,new Vector2(aa.X,aa.Y)));
                 }
             }
         };
