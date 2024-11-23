@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build and hotload",
+            "type": "shell",
+            "command": "dotnet build && dotnet watch --project .\\Zinc.Demos\\Zinc.Demos.csproj",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$msCompile"],
+            "detail": "Build and run the Game project with hot reloading"
+        }
+    ]
+}
