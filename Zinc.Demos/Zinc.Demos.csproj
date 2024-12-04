@@ -9,7 +9,54 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RootNamespace>Zinc.Demos</RootNamespace>
     <AssemblyName>ZincDemos</AssemblyName>
+    
+    <!-- this is all for web publish -->
+    <!-- <EnableAggressiveTrimming>true</EnableAggressiveTrimming> -->
+    <!-- <TrimMode>full</TrimMode> -->
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <PublishTrimmed>true</PublishTrimmed>
+    <SelfContained>true</SelfContained>
+    <MSBuildEnableWorkloadResolver>false</MSBuildEnableWorkloadResolver>
+    <!-- This is to basically disable globalization to exclude icudt.dat (1.5MB) and reduce size of dotnet.wasm -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
+
   </PropertyGroup>
+
+    <!-- this is all for web publish -->
+<!-- 
+  this is for working on uno based on foster's stuff, but we're on nativeaot-llvm so need to figure out what to port, if any
+  <Choose>
+    <When Condition=" $(Configuration) == 'Debug' ">
+      <PropertyGroup>
+        <WasmEmitSymbolMap>true</WasmEmitSymbolMap>
+        <EmccFlags>-sVERBOSE=1 -sMIN_WEBGL_VERSION=2 -Wbad-function-cast -Wcast-function-type -O2 -g3 -sINITIAL_MEMORY=128MB -sMAXIMUM_MEMORY=2048MB -sALLOW_MEMORY_GROWTH=1 -sASYNCIFY_STACK_SIZE=10000000</EmccFlags>
+      </PropertyGroup>
+    </When>
+    <When Condition=" $(Configuration) == 'Release' ">
+      <PropertyGroup>
+        <EmccFlags>-sMIN_WEBGL_VERSION=2 -Wbad-function-cast -Wcast-function-type -O3 -g3 -sINITIAL_MEMORY=128MB -sMAXIMUM_MEMORY=2048MB -sALLOW_MEMORY_GROWTH=1 -sASYNCIFY_STACK_SIZE=10000000</EmccFlags>
+      </PropertyGroup>
+    </When>
+  </Choose>
+   -->
+
+    <!-- this is all for web publish -->
+<ItemGroup>
+  <!-- Generate direct PInvokes for Dependency -->
+  <DirectPInvoke Include="sokol" />
+  <!-- Specify library to link against -->
+  <NativeLibrary Include="sokol.lib" Condition="$(RuntimeIdentifier.StartsWith('win'))" />
+  <NativeLibrary Include="libsokol.a" Condition="!$(RuntimeIdentifier.StartsWith('win'))" />
+  <LinkerArg Include="-s USE_WEBGL2=1" />
+</ItemGroup>
+<ItemGroup>
+  <PackageReference Include="Microsoft.DotNet.ILCompiler.LLVM" Version="10.0.0-*" />
+  <PackageReference Include="runtime.$(NETCoreSdkPortableRuntimeIdentifier).Microsoft.DotNet.ILCompiler.LLVM" Version="10.0.0-*" />
+</ItemGroup>
+
+
+
 
   <ItemGroup>
     <AdditionalFiles Include="res\**\*"/>
