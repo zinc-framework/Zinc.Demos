@@ -46,6 +46,7 @@ public class BunnyMark : Scene
     }
 }
 
+[Arch.AOT.SourceGenerator.Component]
 public record struct BunnyMarkComponent(float VelX, float VelY) : IComponent;
 [Component<BunnyMarkComponent>]
 public partial class Bunny : Sprite
