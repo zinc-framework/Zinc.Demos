@@ -10,7 +10,30 @@ InputSystem.Events.Key.Down += (key,_) =>  {
 	}
 };
 
-List<DemoSceneInfo> demoTypes = new();  
+// DemoSceneInfo[] demoTypes = new DemoSceneInfo[]
+// {
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.Animation),"Animation"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.AsteroidsGame),"AsteroidsGame"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.BunnyMark),"BunnyMark"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.Cards),"Cards"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.ChildrenDemo),"ChildrenDemo"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.Collision),"Collision"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.Coroutines),"Coroutines"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.EntityEmitter),"EntityEmitter"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.FontstashDemo),"FontstashDemo"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.GridDemo),"GridDemo"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.Interaction),"Interaction"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.ParticleSystem),"ParticleSystem"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.Physics),"Physics"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.PhysicsShape),"PhysicsShape"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.ShapeDemo),"ShapeDemo"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.SimpleUpdate),"SimpleUpdate"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.TextDemo),"TextDemo"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.Texture),"Texture"),
+// 	new DemoSceneInfo(typeof(Zinc.Sandbox.Demos.TextureFrame),"TextureFrame"),
+// };
+
+List<DemoSceneInfo> demoTypes = new ();
 Engine.Run(new Engine.RunOptions(1920,1080,"zinc", 
 	() =>
 	{
@@ -39,6 +62,7 @@ void drawDemoOptions()
 				if (ImGUI.MenuItem(type.Name))
 				{
 					scene = Util.CreateInstance(type.Type) as Scene;
+					// scene = Activator.CreateInstance(type.Type) as Scene;
 					scene.Name = type.Name;
 				}
 			}
