@@ -41,5 +41,6 @@ public class TextDemo : Scene
         testText.Renderer_blur = blur;
         testText.ScaleX = scaleX;
         testText.ScaleY = scaleY;
+        Quick.Center(testText);
     }
 }

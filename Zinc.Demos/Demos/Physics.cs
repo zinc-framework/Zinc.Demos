@@ -6,13 +6,10 @@ namespace Zinc.Sandbox.Demos;
 public class Physics : Scene
 {
     //TODO: make physics and actual system to get rid of the jank setters
-    private Resources.Texture conscriptImage;
     private SpriteData conscript;
     public override void Preload()
     {
-        conscriptImage = new Resources.Texture("res/conscript.png");
-        
-        conscript = new(conscriptImage, new Rect(0,0,64,64));
+        conscript = Res.Assets.conscript.Texture.Slice(new Rect(0,0,64,64));
         VoltConfig.AreaMassRatio = 0.000007f;
     }
     

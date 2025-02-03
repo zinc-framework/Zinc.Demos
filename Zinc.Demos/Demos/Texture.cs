@@ -9,6 +9,7 @@ public class Texture : Scene
     {
         //use res folder
         var sprite = Res.Assets.conscript.ToSprite();
+        Quick.Center(sprite);
         sprite.Update = (self, dt) =>
         {
             ((Sprite)self).Rotation += (float)dt;

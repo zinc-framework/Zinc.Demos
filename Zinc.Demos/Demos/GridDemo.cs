@@ -14,6 +14,7 @@ public class GridDemo : Scene
         g = new Grid(cellWidth:dim, cellHeight:dim,update: (self, dt) =>{
             self.Rotation += (float)dt;
         });
+        Quick.Center(g);
 
         for (int i = 0; i < dim * dim; i++)
         {
@@ -23,6 +24,7 @@ public class GridDemo : Scene
         h = new Grid(cellWidth:dim, cellHeight:dim,update: (self, dt) =>{
             self.Rotation -= (float)dt;
         });
+        Quick.Center(h);
 
         for (int i = 0; i < dim * dim; i++)
         {

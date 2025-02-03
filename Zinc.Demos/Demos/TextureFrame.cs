@@ -8,13 +8,16 @@ public class TextureFrame : Scene
     public override void Preload()
     {
         // conscriptImage = new Resources.Texture("res/conscript.png");
-        conscriptImage = Res.Assets.conscript.Texture;
         
-        conscriptFrame0 = new(conscriptImage, new Rect(0,0,64,64));
+        // conscriptImage = Res.Assets.conscript.Texture;
+        // conscriptFrame0 = new(conscriptImage, new Rect(0,0,64,64));
+
+        conscriptFrame0 = Res.Assets.conscript.Texture.Slice(new Rect(0,0,64,64));
+
     }
 
     public override void Create()
     {
-        new Sprite(conscriptFrame0);
+        Quick.Center(new Sprite(conscriptFrame0));
     }
 }

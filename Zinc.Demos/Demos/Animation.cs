@@ -23,6 +23,7 @@ public class Animation : Scene
     public override void Create()
     {
         animatedSprite = new AnimatedSprite(animationData);
+        Quick.Center(animatedSprite);
         new Coroutine(changeAnimationDirection(),"animator");
     }
 

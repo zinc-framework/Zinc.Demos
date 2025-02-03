@@ -36,8 +36,8 @@ public class ChildrenDemo : Scene
                 shapes.Add(new Shape(width:32,height:32,parent: shapes[i-1])
                 {
                     Name = $"Shape{i}",
-                    LocalX = 48,
-                    LocalY = 48,
+                    X = 48,
+                    Y = 48,
                     Collider_Active = true,
                     Collider_OnMouseEnter = (self, mods) =>
                     {

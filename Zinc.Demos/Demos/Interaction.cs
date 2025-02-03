@@ -8,7 +8,7 @@ public class Interaction : Scene
     private AnimatedSpriteData animatedConscript;
     public override void Preload()
     {
-        conscriptImage = new Resources.Texture("res/conscript.png");
+        conscriptImage = Res.Assets.conscript.Texture;
         var rects = Quick.CreateTextureSlices(512, 512, 64, 64);
         animatedConscript = new AnimatedSpriteData(
             conscriptImage,
@@ -26,6 +26,7 @@ public class Interaction : Scene
 	        self.X += DX;
 	        self.Y += DY;
         });
+        Quick.Center(e);
         InputSystem.Events.Key.Down += KeyDownListener;
     }
 
