@@ -9,13 +9,11 @@ public class AsteroidsGame : Scene
 	Tag Tasteroid = "asteroid";
 	Tag Tbullet = "bullet";
 	Tag Tplayer = "player";
-    private Resources.Texture conscriptImage;
     private SpriteData fullConscript;
     private Sprite player;
     public override void Preload()
     {
-        conscriptImage = new Resources.Texture("res/conscript.png");
-        fullConscript = new(conscriptImage,(0,0,64,64));
+		fullConscript = Res.Assets.conscript.Texture.Slice(new Rect(0,0,64,64));
     }
 
     public override void Create()

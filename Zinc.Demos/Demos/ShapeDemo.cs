@@ -7,9 +7,9 @@ public class ShapeDemo : Scene
 {
     public override void Create()
     {
-        new Shape(update: (self, dt) =>
+        var s = new Shape(update: (self, dt) =>
         {
-            Window("rot",() =>
+            Window("shape editor",() =>
             {
                 float rotation = self.Rotation;
                 float scaleX = self.ScaleX;
@@ -22,5 +22,6 @@ public class ShapeDemo : Scene
                 self.ScaleY = scaleY;
             });
         });
+        Quick.Center(s);
     }
 }

@@ -10,14 +10,41 @@ public class ChildrenDemo : Scene
     float scaleY = 1;
     public override void Create()
     {
+        Engine.showStats = false;
         for (int i = 0; i < shapes.Capacity; i++)
         {
-            shapes.Add(new Shape(width:32,height:32,parent: i > 0 ? shapes[i-1] : null)
+            if(i == 0)
             {
-                Name = $"Shape{i}",
-                X = i == 0 ? Engine.Width / 2f : 48,
-                Y = i == 0 ? Engine.Height / 2f : 48,
-            });
+                shapes.Add(new Shape(width:32,height:32)
+                {
+                    Name = $"Shape{i}",
+                    X = Engine.Width / 2f,
+                    Y = Engine.Height / 2f,
+                    Collider_Active = true,
+                    Collider_OnMouseEnter = (self, mods) =>
+                    {
+                        ((Shape)self).Renderer_Color = Palettes.GetRandomColor();
+                    },
+                    Collider_OnStart = (self, other) =>
+                    {
+                        ((Shape)self).Renderer_Color = Palettes.GetRandomColor();
+                    },
+                });
+            }
+            else
+            {
+                shapes.Add(new Shape(width:32,height:32,parent: shapes[i-1])
+                {
+                    Name = $"Shape{i}",
+                    X = 48,
+                    Y = 48,
+                    Collider_Active = true,
+                    Collider_OnMouseEnter = (self, mods) =>
+                    {
+                        ((Shape)self).Renderer_Color = Palettes.GetRandomColor();
+                    },
+                });
+            }
         }
     }
 
