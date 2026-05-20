@@ -1,33 +1,24 @@
-using Volatile;
+using System.Numerics;
 
 namespace Zinc.Sandbox.Demos;
 
 [DemoScene("07 Physics")]
 public class Physics : Scene
 {
-    //TODO: make physics and actual system to get rid of the jank setters
     private SpriteData conscript;
     public override void Preload()
     {
-        conscript = Res.Assets.conscript.Texture.Slice(new Rect(0,0,64,64));
-        VoltConfig.AreaMassRatio = 0.000007f;
+        conscript = Res.Assets.conscript.Texture.Slice(new Rect(0, 0, 64, 64));
     }
-    
-    Dictionary<Sprite, VoltBody> bods = new Dictionary<Sprite, VoltBody>();
+
+    Dictionary<Sprite, PhysicsBody> bods = new();
+
     public override void Create()
     {
-        var bot = new Vector2(0, Engine.Height / 2f);
-        var poly = Engine.PhysicsWorld.CreatePolygonWorldSpace(
-            new Vector2[]
-            {
-                new Vector2(0, Engine.Height),
-                new Vector2(0, Engine.Height + 100),
-                new Vector2(Engine.Width, Engine.Height + 100),
-                new Vector2(Engine.Width, Engine.Height)
-            }, 0f);
-        var bod = Engine.PhysicsWorld.CreateStaticBody(bot, 0f, new[] { poly });
-        bod.Set(bot,0f);
-
+        // Ground: a wide static box sitting at the bottom of the window.
+        var groundCenter = new Vector2(Engine.Width / 2f, Engine.Height + 50f);
+        var ground = Engine.PhysicsWorld.CreateStaticBody(groundCenter);
+        ground.AddBoxShape(Engine.Width, 100f);
     }
 
     double timer = 0;
@@ -37,30 +28,22 @@ public class Physics : Scene
         if (timer > 0.1)
         {
             var startPos = new Vector2(InputSystem.MouseX, InputSystem.MouseY);
-            var a = new Sprite(conscript) {
-                X = (int)startPos.x,
-                Y = (int)startPos.y,
+            var a = new Sprite(conscript)
+            {
+                X = (int)startPos.X,
+                Y = (int)startPos.Y,
                 Collider_Active = false
             };
-            var poly = Engine.PhysicsWorld.CreatePolygonWorldSpace(
-                [
-                    new Vector2(startPos.x, startPos.y),
-                    new Vector2(startPos.x, startPos.y + 64),
-                    new Vector2(startPos.x + 64, startPos.y + 64),
-                    new Vector2(startPos.x + 64, startPos.y)
-                ],1f);
-            var bod = Engine.PhysicsWorld.CreateDynamicBody(startPos, 0f, new []{poly});
-            bods.Add(a,bod);
-            // bod.AddForce(new Vector2(0,9.8f));
-            // a.SetVelocity(-2,0);
+            var bod = Engine.PhysicsWorld.CreateDynamicBody(startPos);
+            bod.AddBoxShape(64f, 64f, density: 1f);
+            bods.Add(a, bod);
             timer = 0;
         }
 
         foreach (var b in bods)
         {
-            b.Value.AddForce(new Vector2(0,9.8f));
-            b.Key.X = (int)b.Value.Position.x;
-            b.Key.Y = (int)b.Value.Position.y;
+            b.Key.X = (int)b.Value.Position.X;
+            b.Key.Y = (int)b.Value.Position.Y;
         }
     }
 }
