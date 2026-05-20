@@ -15,19 +15,20 @@ InputSystem.Events.Key.Down += (key,_) =>  {
 };
 
 List<DemoSceneInfo> demoTypes = new ();
-Engine.Run(new Engine.RunOptions(1280,720,"zinc", 
+Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	() =>
 	{
 		demoTypes = Util.GetDemoSceneTypes().ToList();
 		var scene = new ShapeDemo();
 		scene.Mount(0);
 		scene.Load(() => scene.Start());
-	}, 
+	},
 	() =>
 	{
 		if(Engine.ShowMenu)
 		{
 			drawDemoOptions();
+			Util.DrawDemoNav();
 		}
 	}
 	));
