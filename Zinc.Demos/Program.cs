@@ -19,7 +19,7 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	() =>
 	{
 		demoTypes = Util.GetDemoSceneTypes().ToList();
-		var scene = new ShapeDemo();
+		var scene = new SGP_Example_SDF();
 		scene.Mount(0);
 		scene.Load(() => scene.Start());
 	},

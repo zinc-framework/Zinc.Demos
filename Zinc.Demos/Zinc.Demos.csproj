@@ -29,4 +29,7 @@
     <ProjectReference Include="..\Zinc.Magic\Zinc.Magic\Zinc.Magic.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false"/> -->
   </ItemGroup>
 
+  <!-- Compile res/shaders/*.glsl with sokol-shdc on build (shares the engine's targets). -->
+  <Import Project="..\Zinc\Zinc.Shaders.targets" />
+
 </Project>
