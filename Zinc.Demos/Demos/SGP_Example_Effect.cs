@@ -19,7 +19,7 @@ public class SGP_Example_Effect : Scene
         var perlin = Res.Assets.perlin.Texture;
         baseTex.Load();   // populate Width/Height for the aspect ratio below
         perlin.Load();
-        var linear = new Resources.Sampler("effect_linear"); // defaults: linear filter, repeat wrap
+        var linear = new Sampler(); // defaults: linear filter, repeat wrap
         float imageRatio = (float)baseTex.Width / baseTex.Height;
 
         // color white so the shader's iColor (per-vertex color) doesn't tint the result
