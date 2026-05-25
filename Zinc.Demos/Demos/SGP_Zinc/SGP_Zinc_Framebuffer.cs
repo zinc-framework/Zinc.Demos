@@ -37,6 +37,10 @@ public class SGP_Zinc_Framebuffer : Scene
 
     private unsafe void DrawFan()
     {
+        // This target is sampled as a texture, so flip Y in our own draw (GPU texture sampling is
+        // bottom-up) — same as the raw sokol_gp framebuffer sample. RenderTarget itself imposes no
+        // projection; the default would be upright (for CPU readback), which we override here.
+        GP.project(0, FB, FB, 0);
         float hw = FB * 0.5f, hh = FB * 0.5f, w = FB * 0.3f;
         sgp_vec2* points = stackalloc sgp_vec2[4096];
         int count = 0;

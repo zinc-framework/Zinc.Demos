@@ -12,20 +12,44 @@ InputSystem.Events.Key.Down += (key,_) =>  {
 	{
 		Engine.ShowMenu = !Engine.ShowMenu;
 	}
+	if (key == Key.F2)
+	{
+		Engine.Screenshot(); // timestamped PNG next to Engine.ScreenshotPath
+	}
 };
+
+// Optional headless-ish automation for the screenshot/diff workflow:
+//   ZINC_DEMO=<DemoName>  launch that demo at startup instead of the default
+//   ZINC_SHOT=<path.png>  after the scene settles, capture a screenshot to <path> and quit
+string? autoDemo = Environment.GetEnvironmentVariable("ZINC_DEMO");
+string? autoShot = Environment.GetEnvironmentVariable("ZINC_SHOT");
+int autoTick = 0;
 
 List<DemoSceneInfo> demoTypes = new ();
 Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	() =>
 	{
 		demoTypes = Util.GetDemoSceneTypes().ToList();
-		// var scene = new SGP_Example_SDF();
-		var scene = new SGP_Zinc_Rectangle();
+		Scene? scene = null;
+		if (autoDemo != null)
+		{
+			var info = demoTypes.FirstOrDefault(d => d.Name == autoDemo);
+			if (info != null) { scene = Util.CreateInstance(info.Type) as Scene; scene!.Name = info.Name; }
+			else Console.WriteLine($"[auto] demo '{autoDemo}' not found");
+		}
+		scene ??= new SGP_Zinc_Rectangle();
 		scene.Mount(0);
 		scene.Load(() => scene.Start());
 	},
 	() =>
 	{
+		if (autoShot != null)
+		{
+			autoTick++;
+			if (autoTick == 20) Engine.ShowMenu = false;
+			if (autoTick == 25) Engine.Screenshot(autoShot);
+			if (autoTick == 40) Zinc.Internal.Sokol.App.request_quit();
+		}
 		if(Engine.ShowMenu)
 		{
 			drawDemoOptions();
