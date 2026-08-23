@@ -1,4 +1,4 @@
-using Zinc;
+﻿using Zinc;
 using Zinc.Core;
 using Zinc.Sandbox.Demos;
 using System.Numerics;
@@ -21,7 +21,11 @@ InputSystem.Events.Key.Down += (key,_) =>  {
 // Optional headless-ish automation for the screenshot/diff workflow:
 //   ZINC_DEMO=<DemoName>  launch that demo at startup instead of the default
 //   ZINC_SHOT=<path.png>  after the scene settles, capture a screenshot to <path> and quit
+//   ZINC_TRANSPARENT=1    create a composited, see-through window: whatever is behind
+//                         the window shows through wherever the demo draws nothing.
+//                         Works with any demo, e.g. ZINC_DEMO="08 Shape" ZINC_TRANSPARENT=1
 string? autoDemo = Environment.GetEnvironmentVariable("ZINC_DEMO");
+bool transparent = Environment.GetEnvironmentVariable("ZINC_TRANSPARENT") == "1";
 string? autoShot = Environment.GetEnvironmentVariable("ZINC_SHOT");
 int autoTick = 0;
 
@@ -55,7 +59,8 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 			drawDemoOptions();
 			Util.DrawDemoNav();
 		}
-	}
+	},
+	transparentWindow: transparent
 	));
 
 void drawDemoOptions()
