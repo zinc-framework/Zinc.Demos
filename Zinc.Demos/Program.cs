@@ -26,6 +26,10 @@ InputSystem.Events.Key.Down += (key,_) =>  {
 //                         Works with any demo, e.g. ZINC_DEMO="08 Shape" ZINC_TRANSPARENT=1
 string? autoDemo = Environment.GetEnvironmentVariable("ZINC_DEMO");
 bool transparent = Environment.GetEnvironmentVariable("ZINC_TRANSPARENT") == "1";
+// ZINC_COMPANION=1: the full "desktop companion" shape -- transparent, frameless,
+// always on top, out of the taskbar, and draggable by its content.
+bool companion = Environment.GetEnvironmentVariable("ZINC_COMPANION") == "1";
+if (companion) { transparent = true; }
 string? autoShot = Environment.GetEnvironmentVariable("ZINC_SHOT");
 int autoTick = 0;
 
@@ -33,6 +37,14 @@ List<DemoSceneInfo> demoTypes = new ();
 Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	() =>
 	{
+		if (true)
+		{
+			DesktopWindow.CompanionMode();
+			// The engine's menu bar doubles as the title bar when borderless (drag it to move,
+			// X on the right to quit). That only exists while the menu is shown, so when it's
+			// hidden with ',' fall back to dragging from anywhere.
+			InputSystem.Events.Mouse.Down += (_) => { if (!Engine.ShowMenu) DesktopWindow.BeginDrag(); };
+		}
 		demoTypes = Util.GetDemoSceneTypes().ToList();
 		Scene? scene = null;
 		if (autoDemo != null)
@@ -60,7 +72,8 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 			Util.DrawDemoNav();
 		}
 	},
-	transparentWindow: transparent
+	transparentWindow: true,
+	imguiDocking : true
 	));
 
 void drawDemoOptions()
