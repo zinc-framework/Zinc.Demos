@@ -29,6 +29,12 @@ bool transparent = Environment.GetEnvironmentVariable("ZINC_TRANSPARENT") == "1"
 // ZINC_COMPANION=1: the full "desktop companion" shape -- transparent, frameless,
 // always on top, out of the taskbar, and draggable by its content.
 bool companion = Environment.GetEnvironmentVariable("ZINC_COMPANION") == "1";
+// ZINC_CLICKTHROUGH_TEST=1: alternate click-through on/off every few seconds and log each
+// flip. Timed rather than key-bound so window focus cannot confound the test -- once you
+// click through onto another app it takes focus, and a key binding would stop arriving.
+bool clickThroughTest = Environment.GetEnvironmentVariable("ZINC_CLICKTHROUGH_TEST") == "1";
+double clickThroughClock = 0;
+bool clickThroughState = false;
 companion = true;
 if (companion) { transparent = true; }
 string? autoShot = Environment.GetEnvironmentVariable("ZINC_SHOT");
@@ -40,28 +46,15 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	{
 		if (companion)
 		{
-			DesktopWindow.ClickThrough = true;
 			DesktopWindow.CompanionMode();
 			// The engine's menu bar doubles as the title bar when borderless (drag it to move,
 			// X on the right to quit). That only exists while the menu is shown, so when it's
 			// hidden with ',' fall back to dragging from anywhere.
 			InputSystem.Events.Mouse.Down += (_) => { if (!Engine.ShowMenu) DesktopWindow.BeginDrag(); };
-			// T toggles click-through. Bound to a key on purpose: while it's on the window gets
-			// no mouse input at all, so there'd be no way to click your way back out. Note the
-			// keyboard only reaches us while the window still has focus -- click through onto
-			// another app and it takes focus, so a real companion app wants a global hotkey.
-			InputSystem.Events.Key.Down += (key, _) =>
-			{
-				if (key == Key.T)
-				{
-					DesktopWindow.ClickThrough = !DesktopWindow.ClickThrough;
-					Console.WriteLine($"[companion] click-through: {DesktopWindow.ClickThrough}");
-				}
-			};
 		}
 		demoTypes = Util.GetDemoSceneTypes().ToList();
 		Scene? scene = null;
-		if (autoDemo != null)
+		if (!string.IsNullOrEmpty(autoDemo))
 		{
 			var info = demoTypes.FirstOrDefault(d => d.Name == autoDemo);
 			if (info != null) { scene = Util.CreateInstance(info.Type) as Scene; scene!.Name = info.Name; }
@@ -73,7 +66,21 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	},
 	() =>
 	{
-		if (autoShot != null)
+		if (clickThroughTest)
+		{
+			clickThroughClock += Engine.DeltaTime;
+			if (clickThroughClock >= 4.0)
+			{
+				clickThroughClock = 0;
+				clickThroughState = !clickThroughState;
+				DesktopWindow.ClickThrough = clickThroughState;
+				Console.WriteLine(clickThroughState
+					? "[clickthrough] ON  - clicks should reach whatever is behind the window"
+					: "[clickthrough] OFF - the window should swallow clicks again");
+			}
+		}
+
+		if (!string.IsNullOrEmpty(autoShot))
 		{
 			autoTick++;
 			if (autoTick == 20) Engine.ShowMenu = false;
