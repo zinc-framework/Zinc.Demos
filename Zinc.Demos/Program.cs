@@ -29,6 +29,7 @@ bool transparent = Environment.GetEnvironmentVariable("ZINC_TRANSPARENT") == "1"
 // ZINC_COMPANION=1: the full "desktop companion" shape -- transparent, frameless,
 // always on top, out of the taskbar, and draggable by its content.
 bool companion = Environment.GetEnvironmentVariable("ZINC_COMPANION") == "1";
+companion = true;
 if (companion) { transparent = true; }
 string? autoShot = Environment.GetEnvironmentVariable("ZINC_SHOT");
 int autoTick = 0;
@@ -39,11 +40,24 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	{
 		if (companion)
 		{
+			DesktopWindow.ClickThrough = true;
 			DesktopWindow.CompanionMode();
 			// The engine's menu bar doubles as the title bar when borderless (drag it to move,
 			// X on the right to quit). That only exists while the menu is shown, so when it's
 			// hidden with ',' fall back to dragging from anywhere.
 			InputSystem.Events.Mouse.Down += (_) => { if (!Engine.ShowMenu) DesktopWindow.BeginDrag(); };
+			// T toggles click-through. Bound to a key on purpose: while it's on the window gets
+			// no mouse input at all, so there'd be no way to click your way back out. Note the
+			// keyboard only reaches us while the window still has focus -- click through onto
+			// another app and it takes focus, so a real companion app wants a global hotkey.
+			InputSystem.Events.Key.Down += (key, _) =>
+			{
+				if (key == Key.T)
+				{
+					DesktopWindow.ClickThrough = !DesktopWindow.ClickThrough;
+					Console.WriteLine($"[companion] click-through: {DesktopWindow.ClickThrough}");
+				}
+			};
 		}
 		demoTypes = Util.GetDemoSceneTypes().ToList();
 		Scene? scene = null;
