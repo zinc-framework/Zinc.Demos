@@ -18,26 +18,81 @@ InputSystem.Events.Key.Down += (key,_) =>  {
 	}
 };
 
-// Optional headless-ish automation for the screenshot/diff workflow:
-//   ZINC_DEMO=<DemoName>  launch that demo at startup instead of the default
-//   ZINC_SHOT=<path.png>  after the scene settles, capture a screenshot to <path> and quit
-//   ZINC_TRANSPARENT=1    create a composited, see-through window: whatever is behind
-//                         the window shows through wherever the demo draws nothing.
-//                         Works with any demo, e.g. ZINC_DEMO="08 Shape" ZINC_TRANSPARENT=1
-string? autoDemo = Environment.GetEnvironmentVariable("ZINC_DEMO");
-bool transparent = Environment.GetEnvironmentVariable("ZINC_TRANSPARENT") == "1";
-// ZINC_COMPANION=1: the full "desktop companion" shape -- transparent, frameless,
-// always on top, out of the taskbar, and draggable by its content.
-bool companion = Environment.GetEnvironmentVariable("ZINC_COMPANION") == "1";
-// ZINC_CLICKTHROUGH_TEST=1: alternate click-through on/off every few seconds and log each
-// flip. Timed rather than key-bound so window focus cannot confound the test -- once you
-// click through onto another app it takes focus, and a key binding would stop arriving.
-bool clickThroughTest = Environment.GetEnvironmentVariable("ZINC_CLICKTHROUGH_TEST") == "1";
+// Command-line options. When launching through `dotnet run`, put these after `--`:
+//
+//   dotnet run --project .\Zinc.Demos\Zinc.Demos.csproj -- --demo "08 Shape" --companion
+//
+//   --demo <name>         launch that demo at startup instead of the default
+//   --shot <path.png>     once the scene settles, capture a screenshot there and quit
+//   --transparent         composited, see-through window: whatever is behind it shows
+//                         through wherever the demo draws nothing
+//   --companion           the full desktop-companion shape: transparent + frameless +
+//                         always on top + off the taskbar, draggable by its content
+//   --dockspace           submit a full-viewport ImGui dock space
+//   --clickthrough-test   alternate click-through on/off every 4s, logging each flip.
+//                         Timed rather than key-bound so window focus can't confound the
+//                         test: clicking through onto another app hands it focus, and a
+//                         key binding would stop arriving exactly when it's needed.
+//   --help                print this list and exit
+
+var argList = args.ToList();
+
+bool Flag(string name)
+{
+    int i = argList.FindIndex(a => string.Equals(a, name, StringComparison.OrdinalIgnoreCase));
+    if (i < 0) return false;
+    argList.RemoveAt(i);
+    return true;
+}
+
+string? Option(string name)
+{
+    int i = argList.FindIndex(a => string.Equals(a, name, StringComparison.OrdinalIgnoreCase));
+    if (i < 0) return null;
+    if (i + 1 >= argList.Count)
+    {
+        Console.WriteLine($"[args] {name} needs a value");
+        argList.RemoveAt(i);
+        return null;
+    }
+    string value = argList[i + 1];
+    argList.RemoveRange(i, 2);
+    return value;
+}
+
+if (Flag("--help") || Flag("-h"))
+{
+    Console.WriteLine("""
+        Zinc.Demos options (pass after `--` when using dotnet run)
+
+          --demo <name>         launch that demo at startup instead of the default
+          --shot <path.png>     capture a screenshot once the scene settles, then quit
+          --transparent         composited, see-through window
+          --companion           transparent + frameless + always on top + off-taskbar
+          --dockspace           submit a full-viewport ImGui dock space
+          --clickthrough-test   alternate click-through every 4s, logging each flip
+          --help                print this list and exit
+        """);
+    return;
+}
+
+string? autoDemo = Option("--demo");
+string? autoShot = Option("--shot");
+bool transparent = Flag("--transparent");
+bool companion = Flag("--companion");
+bool dockSpace = Flag("--dockspace");
+bool clickThroughTest = Flag("--clickthrough-test");
+
+// companion is transparent plus window chrome changes, so it implies --transparent
+if (companion) { transparent = true; }
+
+foreach (var leftover in argList)
+{
+    Console.WriteLine($"[args] ignoring unrecognised option '{leftover}' (try --help)");
+}
+
 double clickThroughClock = 0;
 bool clickThroughState = false;
-companion = true;
-if (companion) { transparent = true; }
-string? autoShot = Environment.GetEnvironmentVariable("ZINC_SHOT");
 int autoTick = 0;
 
 List<DemoSceneInfo> demoTypes = new ();
@@ -93,7 +148,8 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 			Util.DrawDemoNav();
 		}
 	},
-	transparentWindow: transparent
+	transparentWindow: transparent,
+	imguiDockSpace: dockSpace
 	));
 
 void drawDemoOptions()
