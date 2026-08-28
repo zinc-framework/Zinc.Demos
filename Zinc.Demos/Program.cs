@@ -37,7 +37,7 @@ List<DemoSceneInfo> demoTypes = new ();
 Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	() =>
 	{
-		if (true)
+		if (companion)
 		{
 			DesktopWindow.CompanionMode();
 			// The engine's menu bar doubles as the title bar when borderless (drag it to move,
@@ -72,8 +72,7 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 			Util.DrawDemoNav();
 		}
 	},
-	transparentWindow: true,
-	imguiDocking : true
+	transparentWindow: transparent
 	));
 
 void drawDemoOptions()
