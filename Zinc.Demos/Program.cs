@@ -85,7 +85,7 @@ bool clickThroughTest = Flag("--clickthrough-test");
 
 // --companion is the full preset; --transparent is just the see-through background
 var windowOptions = companion
-	? Engine.WindowOptions.Companion
+	? new Engine.WindowOptions(Transparent: true, Borderless: true, Topmost: true, ShowInTaskbar: false)
 	: new Engine.WindowOptions(Transparent: transparent);
 
 foreach (var leftover in argList)
@@ -122,6 +122,15 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	},
 	() =>
 	{
+		if (Engine.FrameCount == 120)
+		{
+			Console.WriteLine($"[probe] before: {Engine.Window}");
+			Engine.ApplyWindowOptions(Engine.Window with { Borderless = false, Topmost = false });
+			Console.WriteLine($"[probe] after chrome change: {Engine.Window}");
+			Engine.ApplyWindowOptions(Engine.Window with { Transparent = !Engine.Window.Transparent });
+			Console.WriteLine($"[probe] after illegal transparent flip: {Engine.Window}");
+		}
+
 		if (clickThroughTest)
 		{
 			clickThroughClock += Engine.DeltaTime;
