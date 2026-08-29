@@ -85,8 +85,8 @@ bool clickThroughTest = Flag("--clickthrough-test");
 
 // --companion is the full preset; --transparent is just the see-through background
 var windowOptions = companion
-	? new Engine.WindowOptions(Transparent: true, Borderless: true, Topmost: true, ShowInTaskbar: false)
-	: Engine.WindowOptions.Default with { Transparent = transparent };
+	? Engine.WindowOptions.Companion
+	: new Engine.WindowOptions(Transparent: transparent);
 
 foreach (var leftover in argList)
 {
