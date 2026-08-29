@@ -83,8 +83,10 @@ bool companion = Flag("--companion");
 bool dockSpace = Flag("--dockspace");
 bool clickThroughTest = Flag("--clickthrough-test");
 
-// companion is transparent plus window chrome changes, so it implies --transparent
-if (companion) { transparent = true; }
+// --companion is the full preset; --transparent is just the see-through background
+var windowOptions = companion
+	? Engine.WindowOptions.Companion
+	: Engine.WindowOptions.Default with { Transparent = transparent };
 
 foreach (var leftover in argList)
 {
@@ -101,7 +103,6 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 	{
 		if (companion)
 		{
-			DesktopWindow.CompanionMode();
 			// The engine's menu bar doubles as the title bar when borderless (drag it to move,
 			// X on the right to quit). That only exists while the menu is shown, so when it's
 			// hidden with ',' fall back to dragging from anywhere.
@@ -128,7 +129,7 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 			{
 				clickThroughClock = 0;
 				clickThroughState = !clickThroughState;
-				DesktopWindow.ClickThrough = clickThroughState;
+				Engine.ClickThrough = clickThroughState;
 				Console.WriteLine(clickThroughState
 					? "[clickthrough] ON  - clicks should reach whatever is behind the window"
 					: "[clickthrough] OFF - the window should swallow clicks again");
@@ -148,8 +149,8 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 			Util.DrawDemoNav();
 		}
 	},
-	transparentWindow: transparent,
-	imguiDockSpace: dockSpace
+	imguiDockSpace: dockSpace,
+	window: windowOptions
 	));
 
 void drawDemoOptions()
