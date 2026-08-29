@@ -4,3 +4,7 @@ obj/
 .idea/
 
 bin/
+
+# local screenshot scratch (F2 / --shot output)
+*_test.png
+screenshots/
