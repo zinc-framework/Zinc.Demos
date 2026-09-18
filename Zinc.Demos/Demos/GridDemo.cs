@@ -36,13 +36,10 @@ public class GridDemo : Scene
     {
         float pingPong = MathF.Sin((float)Engine.Time) + 2f;
 
-        g.CellWidth = pingPong * dim;
-        g.CellHeight = pingPong * dim;
+        // cell spacing rides on the grid's scale along with the cell sizes
         g.ScaleX = pingPong;
         g.ScaleY = pingPong;
 
-        h.CellWidth = pingPong* dim;
-        h.CellHeight = pingPong* dim;
         h.ScaleX = pingPong;
         h.ScaleY = pingPong;
     }
