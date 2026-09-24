@@ -106,7 +106,7 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 			// The engine's menu bar doubles as the title bar when borderless (drag it to move,
 			// X on the right to quit). That only exists while the menu is shown, so when it's
 			// hidden with ',' fall back to dragging from anywhere.
-			InputSystem.Events.Mouse.Down += (_) => { if (!Engine.ShowMenu) DesktopWindow.BeginDrag(); };
+			InputSystem.Events.Mouse.Down += (_, _) => { if (!Engine.ShowMenu) DesktopWindow.BeginDrag(); };
 		}
 		demoTypes = Util.GetDemoSceneTypes().ToList();
 		Scene? scene = null;

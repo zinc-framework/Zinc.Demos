@@ -55,7 +55,7 @@ public class Cards : Scene
             Collider_Active = true,
             Tags = [deck],
             //clicking the deck draws a card
-            Collider_OnMousePressed = (self, mods) =>
+            Collider_OnMousePressed = (self, _, mods) =>
             {
                 //"draw" a card
                 // placementRowAnchors.GetGridPosition(0);
@@ -75,7 +75,7 @@ public class Cards : Scene
             RenderOrder = 0,
             Collider_Active = true,
             Tags = [card],
-            Collider_OnMouseDown = (self, mods) =>
+            Collider_OnMouseDown = (self, _, mods) =>
             {
                 // if(self.NotTagged(moving) && !currentlyMovingCard)
                 if(self.NotTagged(moving))
@@ -87,7 +87,7 @@ public class Cards : Scene
                     self.Untag(positioned);
                 }
             },
-            Collider_OnMouseUp = (self, mods) =>
+            Collider_OnMouseUp = (self, _, mods) =>
             {
                 self.Untag(held);
                 //need to sourcegen this to forward to colliders
