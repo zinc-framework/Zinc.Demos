@@ -8,3 +8,5 @@ bin/
 # local screenshot scratch (F2 / --shot output)
 *_test.png
 screenshots/
+
+.DS_Store
