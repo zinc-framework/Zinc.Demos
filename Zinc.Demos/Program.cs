@@ -14,7 +14,7 @@ InputSystem.Events.Key.Down += (key,_) =>  {
 	}
 	if (key == Key.F2)
 	{
-		Engine.Screenshot(); // timestamped PNG next to Engine.ScreenshotPath
+		Engine.Screenshot(); // timestamped PNG in Engine.ScreenshotDirectory
 	}
 };
 
