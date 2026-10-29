@@ -120,7 +120,7 @@ Engine.Run(new Engine.RunOptions(1280,720,"zinc",
 		scene.Mount(0);
 		scene.Load(() => scene.Start());
 	},
-	() =>
+	_ =>
 	{
 		if (Engine.FrameCount == 120)
 		{
